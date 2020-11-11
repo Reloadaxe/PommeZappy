@@ -1,6 +1,7 @@
 #ifndef _PLAYER_HH
 #define _PLAYER_HH
 
+#include <algorithm>
 #include "Map.hh"
 #include "Id.hh"
 
@@ -21,8 +22,10 @@ class Player {
         void Attack();
         void Move();
         bool DoCommand(const Command command);
+        static void SetIds(const unsigned int size);
 
     private:
+        static std::vector<bool> _ids;
         unsigned int _id;
         unsigned int _energy;
         unsigned int _lifePoints;

@@ -1,6 +1,22 @@
 #include "Player.hh"
 
-Player::Player(const unsigned int y, const unsigned int x) : _id(Id::New()), _energy(2), _lifePoints(10), _victoryPoints(0), _orientation(North), _y(y), _x(x) {}
+Player::Player(const unsigned int y, const unsigned int x) : _energy(2), _lifePoints(10), _victoryPoints(0), _orientation(North), _y(y), _x(x)
+{
+    std::vector<bool>::iterator it = std::find(_ids.begin(), _ids.end(), false);
+    if (it != _ids.end()) {
+        int index = std::distance(_ids.begin(), it);
+        _id = _ids.at(index);
+        _ids.at(index) = true;
+    } else {
+        _id = -1;
+    }
+}
+
+void Player::SetIds(const unsigned int size)
+{
+    std::fill(_ids.begin(), _ids.begin() + size, false);
+}
+
 
 void Player::AddLifePoint(void)
 {
