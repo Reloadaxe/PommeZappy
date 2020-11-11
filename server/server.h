@@ -7,3 +7,4 @@
 #include <QtCore/QCommandLineParser>
 
 #include "parser_utils.h"
+#include "parser_service.h"
