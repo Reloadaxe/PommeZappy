@@ -1,4 +1,5 @@
-SRC			=	FontManager.cpp \
+SRC			=	Connection.cpp \
+				FontManager.cpp \
 				Player.cpp \
 				Map.cpp \
 				main.cpp
@@ -12,16 +13,16 @@ CXXFLAGS	=	-Wall -Wextra -Wpedantic -Werror -std=c++14
 
 RM			=	rm -rf
 
-IPATH		= 	SFML/include
+IPATH		= 	-ISFML/include -ISockpp/include
 
-LPATH		= 	SFML/lib
+LPATH		= 	-LSFML/lib -LSockpp/lib
 
-LIBRARIES	= 	-lsfml-graphics -lsfml-window -lsfml-system
+LIBRARIES	= 	-lsfml-graphics -lsfml-window -lsfml-system -lsockpp
 
 all:		$(NAME)
 
 $(NAME):	$(OBJ)
-			$(CXX) $(OBJ) -I$(IPATH) -L$(LPATH) $(LIBRARIES) -o $(NAME)
+			$(CXX) $(OBJ) $(IPATH) $(LPATH) $(LIBRARIES) -o $(NAME)
 
 clean:
 			$(RM) $(OBJ)

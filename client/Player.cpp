@@ -36,3 +36,8 @@ Player *Player::Get(void)
         _player = new Player();
     return _player;
 }
+
+const std::string Player::Think(const std::string map)
+{
+    return map;
+}

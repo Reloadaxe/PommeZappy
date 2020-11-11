@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "FontManager.hh"
+#include "Map.hh"
 
 class Player {
     public:
@@ -11,6 +12,7 @@ class Player {
         Player& operator=(const Player&) = delete;
         void showInformations(sf::RenderWindow *window, const unsigned int width, const unsigned int height, const unsigned int hudHeight);
         static Player *Get(void);
+        const std::string Think(const std::string map);
 
     private:
         Player(void);
