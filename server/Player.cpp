@@ -14,6 +14,7 @@ Player::Player(const unsigned int y, const unsigned int x) : _energy(2), _lifePo
 
 void Player::SetIds(const unsigned int size)
 {
+    _ids.clear();
     std::fill(_ids.begin(), _ids.begin() + size, false);
 }
 
