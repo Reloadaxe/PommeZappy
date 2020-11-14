@@ -1,4 +1,11 @@
 #include "server.h"
+#include <chrono>
+#include "Server.h"
+
+uint64_t timeSinceEpochMillisec() {
+  using namespace std::chrono;
+  return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+}
 
 int main(int argc, char **argv)
 {
@@ -19,11 +26,25 @@ int main(int argc, char **argv)
 
     // Printing summary
     std::cout\
-            << "Listening on " << host << ", port " << port << "\n"\
+            << "Server will listen on " << host << ", port " << port << "\n"\
             << "Handling " << nb_players << " players\n"\
             << "On a map of width " << map_width << " and height " << map_height << "\n"\
-            << "Cycling map every " << cycle_interval << " ms\n";
+            << "Cycling map every " << cycle_interval << " ms\n" << std::endl;
 
-    // Initiating server
-    std::vector<std::_Any_data> clients;
+    // Initializing game
+    // Map* map = Map::Get(map_height, map_width);
+    // ...
+    long current_game_cycle = 0;
+    uint64_t last_cycle_time = -1;
+
+    // Initializing server
+    Server* server = Server::getInstance(host, port, nb_players);
+    std::cout << "Starting server..." << std::endl;
+    server->start();
+    std::cout << "Waiting for " << nb_players << " players to join..." << std::endl;
+    while(static_cast<int>(server->getClients().size()) < nb_players);
+    server->refuseAdditionalClients();
+    std::cout << "Perfect, " << nb_players << " joined !" << std::endl;
+    std::cout << "Starting the game..." << std::endl;
+    // periodically checking if all players are whether dead or disconnected
 }
