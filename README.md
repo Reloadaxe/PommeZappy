@@ -23,12 +23,14 @@ make
 ### Install
 
 ```bash
-cd client
+apt install g++ qt5-default -y
+cd client/build
 make
 ```
 
 ### Run
 
 ```bash
-./client
+cd client/build
+./client --host <host> --port <port>
 ```
