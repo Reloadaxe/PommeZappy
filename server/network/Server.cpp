@@ -37,14 +37,13 @@ void Server::incomingConnection(int socketDescriptor)
     if (static_cast<int>(this->clients.size()) >= max_clients
             || this->refuse_additional_clients) {
         socket_client->disconnect();
-        qDebug() << "Refused client due to nb clients exceeded or game started "\
+        qDebug() << "Refused connection due to nb clients exceeded or game started "\
                  << socket_client->peerAddress().toString();
         return;
     }
 
     QString peer_name = QString::fromUtf8(get_uuid().c_str());
     Client client = Client(peer_name, socket_client);
-    client.connected = true;
     qDebug() << "Client connected with address "\
              << socket_client->peerAddress().toString()\
              << " : ID " << peer_name << " was attributed";
@@ -92,7 +91,7 @@ void Server::readyRead()
 }
 
 /**
- * @brief Server::processCommand
+ * @brief Server::respondToCommand
  * Returns the value corresponding to the command and/or stacks it for the next game cycle
  *
  * "move" commands are pushed into the commands stack
@@ -122,8 +121,6 @@ void Server::disconnected()
         return;
     }
     qDebug() << "Client disconnected : " << socket_client->peerAddress().toString();
-
-    client.connected = false;
     clients.erase(socket_client);
 }
 
@@ -134,4 +131,14 @@ std::vector<Client*> Server::getClients()
     for ( it = this->clients.begin(); it != this->clients.end(); it++ )
         ptr_clients.push_back(&it->second);
     return ptr_clients;
+}
+
+bool Server::areAllClientsDisconnected()
+{
+    bool all_clients_disconnected = true;
+    std::map<QTcpSocket*, Client>::iterator it;
+    for ( it = this->clients.begin(); it != this->clients.end(); it++ )
+        if (it->second.isConnected())
+            return false;
+    return all_clients_disconnected;
 }

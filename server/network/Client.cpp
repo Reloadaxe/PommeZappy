@@ -40,3 +40,8 @@ QTcpSocket* Client::getSocket()
 {
     return this->socket;
 }
+
+bool Client::isConnected()
+{
+    return (this->socket->state() == QTcpSocket::ConnectedState);
+}

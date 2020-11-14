@@ -1,6 +1,5 @@
 #include "server_utils.h"
 
-
 std::string get_uuid()
 {
     static std::random_device dev;

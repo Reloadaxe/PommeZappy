@@ -1,5 +1,6 @@
-#include "server.h"
 #include <chrono>
+
+#include "server.h"
 #include "Server.h"
 
 uint64_t timeSinceEpochMillisec() {
@@ -31,7 +32,7 @@ int main(int argc, char **argv)
             << "On a map of width " << map_width << " and height " << map_height << "\n"\
             << "Cycling map every " << cycle_interval << " ms\n" << std::endl;
 
-    // Initializing game
+    // Initializing game (TODO)
     // Map* map = Map::Get(map_height, map_width);
     // ...
     long current_game_cycle = 0;
@@ -46,5 +47,19 @@ int main(int argc, char **argv)
     server->refuseAdditionalClients();
     std::cout << "Perfect, " << nb_players << " joined !" << std::endl;
     std::cout << "Starting the game..." << std::endl;
-    // periodically checking if all players are whether dead or disconnected
+
+    // Periodically checking if all players are whether disconnected or dead (TODO)
+    while(server->areAllClientsDisconnected() == false)
+    {
+        uint64_t current_time = timeSinceEpochMillisec();
+        if (current_time - last_cycle_time >= (ulong)cycle_interval)
+        {
+            current_game_cycle += 1;
+            last_cycle_time = current_time;
+            std::cout << "Currently running game cycle " << current_game_cycle << std::endl;
+        }
+    }
+
+    // TODO : Game ended, displaying leaderboard
+    std::cout << "Thank you for playing, game ended!" << std::endl;
 }

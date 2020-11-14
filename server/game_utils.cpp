@@ -7,11 +7,12 @@ std::vector<std::string> MOVE_COMMANDS{
     "leftfwd",
     "rightfwd",
     "jump",
-    "back"
+    "back",
+    "inspect"
 };
 
 std::vector<std::string> UTILITARIAN_COMMANDS{
-    "inspect",
+    "map",
     "me"
 };
 
@@ -20,7 +21,7 @@ std::vector<std::string> UTILITARIAN_COMMANDS{
 /**
  * @brief get_command_type
  * Returns "move" or "utilitarian". Utilitarian commands don't require
- * any verification in order to be returned by the server.
+ * any player energy verification in order to be returned by the server.
  * @param command
  * @return
  */

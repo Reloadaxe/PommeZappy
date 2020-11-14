@@ -18,6 +18,7 @@ public:
     void start(void);
     void refuseAdditionalClients(); // When game starts
     void respondToCommand(Client* client, QString command);
+    bool areAllClientsDisconnected();
 
     std::vector<Client*> getClients();
 
