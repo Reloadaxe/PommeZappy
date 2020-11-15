@@ -7,6 +7,7 @@
 #include <vector>
 
 std::string get_uuid();
+
 std::string get_response_ko(std::string command);
 
 #endif

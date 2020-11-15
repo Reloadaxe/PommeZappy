@@ -7,8 +7,6 @@
 #include <QTcpSocket>
 
 #include "Client.h"
-#include "server_utils.h"
-#include "game_utils.h"
 
 class Server : public QTcpServer {
     Q_OBJECT
@@ -20,7 +18,7 @@ public:
     void refuseAdditionalClients(); // When game starts
     void respondToCommand(Client* client, QString command);
     bool areAllClientsDisconnected();
-    void performGameCycle();
+    void performGameCycle(Map* map);
 
     std::vector<Client*> getClients();
 

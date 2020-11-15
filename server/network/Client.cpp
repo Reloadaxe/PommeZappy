@@ -21,6 +21,26 @@ Client::~Client()
     this->disconnect();
 }
 
+void Client::setPlayer(Player* player)
+{
+    this->player = player;
+}
+
+Player* Client::getPlayer()
+{
+    return this->player;
+}
+
+void Client::setMap(Map* map)
+{
+    this->map = map;
+}
+
+Map* Client::getMap()
+{
+    return this->map;
+}
+
 void Client::disconnect()
 {
     this->socket->disconnect();
@@ -34,6 +54,21 @@ void Client::setClientId(QString client_id)
 QString Client::getClientId()
 {
     return this->client_id;
+}
+
+void Client::setCommand(QString command)
+{
+    this->move_command = command;
+}
+
+QString Client::getCommand()
+{
+    return this->move_command;
+}
+
+void Client::clearCommand()
+{
+    this->move_command = "";
 }
 
 QTcpSocket* Client::getSocket()
