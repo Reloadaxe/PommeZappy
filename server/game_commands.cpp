@@ -91,6 +91,7 @@ QString cmd_register(Client* client, std::string command)
             return command_fnc(client);
         }
     }
+    // Send KO response if command is invalid or client has already played
     return QString::fromUtf8(get_response_ko(command).c_str());
 }
 
