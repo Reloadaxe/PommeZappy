@@ -16,14 +16,14 @@ std::vector<std::string> UTILITARIAN_COMMANDS{
     "me"
 };
 
-// TODO: pointeur sur fonction pour les commandes
+// TODO(flavienbwk) : pointeur sur fonction pour les commandes
 
 /**
  * @brief get_command_type
  * Returns "move" or "utilitarian". Utilitarian commands don't require
  * any player energy verification in order to be returned by the server.
  * @param command
- * @return
+ * @return Command type or empty string if invalid
  */
 std::string get_command_type(std::string command)
 {
@@ -34,11 +34,4 @@ std::string get_command_type(std::string command)
     if (std::find(UTILITARIAN_COMMANDS.begin(), UTILITARIAN_COMMANDS.end(), command) != UTILITARIAN_COMMANDS.end())
         return "utilitarian";
     return "";
-}
-
-std::string get_response_ko(std::string command)
-{
-    std::ostringstream stream;
-    stream << "{\"" << command << "\": \"KO\"}";
-    return stream.str();
 }

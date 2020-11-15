@@ -6,17 +6,17 @@
 
 class Cell {
     public:
-        Cell(const unsigned int y, const unsigned int x);
-        Item *GetItem(void) const;
+        Cell(unsigned int y, unsigned int x);
+        Item *GetItem(void);
         void RemoveItem(void);
-        Player *GetPlayer(void) const;
+        Player *GetPlayer(void);
         void RemovePlayer(void);
         void SetPlayer(Player *player);
         void Show(void);
 
     private:
-        const unsigned int _y;
-        const unsigned int _x;
+        unsigned int _y;
+        unsigned int _x;
         Item *_item;
         Player *_player;
 };

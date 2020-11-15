@@ -20,3 +20,10 @@ std::string get_uuid()
     }
     return res;
 }
+
+std::string get_response_ko(std::string command)
+{
+    std::ostringstream stream;
+    stream << "{\"" << command << "\": \"KO\"}";
+    return stream.str();
+}

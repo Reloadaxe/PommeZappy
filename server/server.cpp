@@ -2,10 +2,12 @@
 
 #include "server.h"
 #include "Server.h"
+// #include "Map.hh"
 
-uint64_t timeSinceEpochMillisec() {
-  using namespace std::chrono;
-  return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+uint64_t timeSinceEpochMillisec()
+{
+    using namespace std::chrono;
+    return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }
 
 int main(int argc, char **argv)
@@ -26,40 +28,47 @@ int main(int argc, char **argv)
     assert_ip(host, "host");
 
     // Printing summary
-    std::cout\
-            << "Server will listen on " << host << ", port " << port << "\n"\
-            << "Handling " << nb_players << " players\n"\
-            << "On a map of width " << map_width << " and height " << map_height << "\n"\
-            << "Cycling map every " << cycle_interval << " ms\n" << std::endl;
+    std::cout
+        << "Server will listen on " << host << ", port " << port << "\n"
+        << "Handling " << nb_players << " players\n"
+        << "On a map of width " << map_width << " and height " << map_height << "\n"
+        << "Cycling map every " << cycle_interval << " ms\n"
+        << std::endl;
 
-    // Initializing game (TODO)
-    // Map* map = Map::Get(map_height, map_width);
-    // ...
+    // Initializing game
+    // TODO : Map *map = Map::Get(map_height, map_width);
+    // TODO : std::vector<Players> players;
+    // TODO : Attribute its position to each player
     long current_game_cycle = 0;
     uint64_t last_cycle_time = -1;
 
     // Initializing server
-    Server* server = Server::getInstance(host, port, nb_players);
+    Server *server = Server::getInstance(host, port, nb_players);
     std::cout << "Starting server..." << std::endl;
     server->start();
     std::cout << "Waiting for " << nb_players << " players to join..." << std::endl;
-    while(static_cast<int>(server->getClients().size()) < nb_players);
+    while (static_cast<int>(server->getClients().size()) < nb_players);
     server->refuseAdditionalClients();
+    // TODO : Attribute each Player to a Client (and reciprocally?)
     std::cout << "Perfect, " << nb_players << " joined !" << std::endl;
     std::cout << "Starting the game..." << std::endl;
 
-    // Periodically checking if all players are whether disconnected or dead (TODO)
-    while(server->areAllClientsDisconnected() == false)
+    // Periodically checking if all players are whether disconnected OR dead (TODO)
+    while (
+        server->areAllClientsDisconnected() == false)
     {
         uint64_t current_time = timeSinceEpochMillisec();
         if (current_time - last_cycle_time >= (ulong)cycle_interval)
         {
             current_game_cycle += 1;
             last_cycle_time = current_time;
-            std::cout << "Currently running game cycle " << current_game_cycle << std::endl;
+            std::cout << "Currently running game cycle " << current_game_cycle << "..." << std::endl;
+            server->performGameCycle(); // TODO : Should probably be inside a Game class or in game_utils when commons/*.cpp compile
+            // map->Show();
         }
     }
 
     // TODO : Game ended, displaying leaderboard
     std::cout << "Thank you for playing, game ended!" << std::endl;
+    server->stop();
 }

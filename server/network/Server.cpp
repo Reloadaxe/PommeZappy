@@ -24,6 +24,11 @@ void Server::start(void)
     listen(address, (qint16)this->listen_port);
 }
 
+void Server::stop(void)
+{
+    close();
+}
+
 void Server::refuseAdditionalClients()
 {
     this->refuse_additional_clients = true;
@@ -90,26 +95,6 @@ void Server::readyRead()
     }
 }
 
-/**
- * @brief Server::respondToCommand
- * Returns the value corresponding to the command and/or stacks it for the next game cycle
- *
- * "move" commands are pushed into the commands stack
- * "utilitarian" commands are not
- */
-void Server::respondToCommand(Client* client, QString command)
-{
-    std::string response = get_response_ko(command.toStdString());
-    std::string command_type = get_command_type(command.toStdString());
-//    if (command_type.empty())
-//        ; // TODO
-//    else if(command_type == "move")
-//        ; // TODO
-//    else if(command_type == "utilitarian")
-//        ; // TODO
-    client->getSocket()->write(response.c_str());
-}
-
 void Server::disconnected()
 {
     QTcpSocket *socket_client = (QTcpSocket*)sender();
@@ -141,4 +126,33 @@ bool Server::areAllClientsDisconnected()
         if (it->second.isConnected())
             return false;
     return all_clients_disconnected;
+}
+
+/**
+ * @brief Server::respondToCommand
+ * Returns the value corresponding to the command and/or stacks it for the next game cycle
+ *
+ * "move" commands are pushed into the commands stack
+ * "utilitarian" commands are not
+ */
+void Server::respondToCommand(Client* client, QString command)
+{
+    std::string response = get_response_ko(command.toStdString());
+    std::string command_type = get_command_type(command.toStdString());
+//    if (command_type.empty())
+//        ; // TODO
+//    else if(command_type == "move")
+//        ; // TODO
+//    else if(command_type == "utilitarian")
+//        ; // TODO
+    client->getSocket()->write(response.c_str());
+}
+
+/**
+ * @brief performGameCycle
+ * Most import function of the server. Performs game actions for each player.
+ */
+void Server::performGameCycle()
+{
+    // TODO : Iterate through each player to perform move commands !
 }

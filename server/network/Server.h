@@ -16,9 +16,11 @@ class Server : public QTcpServer {
 public:
     static Server* getInstance(std::string listen_host, int listen_port, int max_clients);
     void start(void);
+    void stop(void);
     void refuseAdditionalClients(); // When game starts
     void respondToCommand(Client* client, QString command);
     bool areAllClientsDisconnected();
+    void performGameCycle();
 
     std::vector<Client*> getClients();
 

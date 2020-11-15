@@ -1,8 +1,8 @@
 #include "Cell.hh"
 
-Cell::Cell(const unsigned int y, const unsigned int x) : _y(y), _x(x), _item(nullptr), _player(nullptr) {}
+Cell::Cell(unsigned int y, unsigned int x) : _y(y), _x(x), _item(nullptr), _player(nullptr) {}
 
-Item *Cell::GetItem(void) const
+Item *Cell::GetItem(void)
 {
     return _item;
 }
@@ -13,7 +13,7 @@ void Cell::RemoveItem(void)
     _item = nullptr;
 }
 
-Player *Cell::GetPlayer(void) const
+Player *Cell::GetPlayer(void)
 {
     return _player;
 }

@@ -19,8 +19,11 @@ public:
     Client(QString client_id, QTcpSocket *socket);
     Client(std::string client_id, QTcpSocket *socket);
 
-    // Local resources
+    // Player* player; // Client points to player
+
     void disconnect();                      // Drops the socket connection
+    // void setPlayer(Player* player);
+    // Player* getPlayer();
     void setClientId(QString client_id);
     QString getClientId();
     QTcpSocket* getSocket();
