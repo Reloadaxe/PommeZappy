@@ -4,10 +4,15 @@
 
 ### Install
 
-Please install the dependencies and compile the library :
+Please install the dependencies :
 
 ```bash
 apt install g++ qt5-default -y
+```
+
+**We recommend using QtCreator to build this project.** However, if you wish to use a Makefile, run the following :
+
+```bash
 cd server/build
 make server
 ```
@@ -24,6 +29,11 @@ make server
 
 ```bash
 apt install g++ qt5-default -y
+```
+
+**We recommend using QtCreator to build this project.** However, if you wish to use a Makefile, run the following :
+
+```bash
 cd client/build
 make
 ```
