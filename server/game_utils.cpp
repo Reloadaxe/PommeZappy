@@ -1,37 +1,24 @@
 #include "game_utils.h"
 
-std::vector<std::string> MOVE_COMMANDS{
-    "left",
-    "right",
-    "fwd",
-    "leftfwd",
-    "rightfwd",
-    "jump",
-    "back",
-    "inspect"
-};
-
-std::vector<std::string> UTILITARIAN_COMMANDS{
-    "map",
-    "me"
-};
-
-// TODO(flavienbwk) : pointeur sur fonction pour les commandes
-
-/**
- * @brief get_command_type
- * Returns "move" or "utilitarian". Utilitarian commands don't require
- * any player energy verification in order to be returned by the server.
- * @param command
- * @return Command type or empty string if invalid
- */
-std::string get_command_type(std::string command)
+std::vector<Player*> get_init_players(Map* map, int nb_players)
 {
-    if (command.empty() || command.size() == 0)
-        return "";
-    if (std::find(MOVE_COMMANDS.begin(), MOVE_COMMANDS.end(), command) != MOVE_COMMANDS.end())
-        return "move";
-    if (std::find(UTILITARIAN_COMMANDS.begin(), UTILITARIAN_COMMANDS.end(), command) != UTILITARIAN_COMMANDS.end())
-        return "utilitarian";
-    return "";
+    map->GetWidth(); // To remove once following TODO is done (avoiding -Wunused)
+    std::vector<Player*> players(nb_players);
+    for (int i = 0; i < nb_players; i++)
+    {
+        players.push_back(new Player(0, 0)); // TODO : Spawn players in appropriate map locations
+    }
+    return players;
+}
+
+void associate_players_to_clients(std::vector<Player*> players, std::vector<Client*> clients)
+{
+    for(std::size_t i = 0; i < clients.size(); i++)
+        clients[i]->setPlayer(players[i]);
+}
+
+void associate_map_to_clients(Map* map, std::vector<Client*> clients)
+{
+    for(std::size_t i = 0; i < clients.size(); i++)
+        clients[i]->setMap(map);
 }

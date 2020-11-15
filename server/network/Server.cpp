@@ -1,4 +1,6 @@
 #include "Server.h"
+#include "server_utils.h"
+#include "game_commands.h"
 
 Server* Server::instance = 0;
 
@@ -128,31 +130,21 @@ bool Server::areAllClientsDisconnected()
     return all_clients_disconnected;
 }
 
-/**
- * @brief Server::respondToCommand
- * Returns the value corresponding to the command and/or stacks it for the next game cycle
- *
- * "move" commands are pushed into the commands stack
- * "utilitarian" commands are not
- */
 void Server::respondToCommand(Client* client, QString command)
 {
-    std::string response = get_response_ko(command.toStdString());
-    std::string command_type = get_command_type(command.toStdString());
-//    if (command_type.empty())
-//        ; // TODO
-//    else if(command_type == "move")
-//        ; // TODO
-//    else if(command_type == "utilitarian")
-//        ; // TODO
-    client->getSocket()->write(response.c_str());
+    client->getSocket()->write(
+        cmd_register(client, command.toStdString()).toStdString().c_str()
+    );
 }
 
 /**
  * @brief performGameCycle
  * Most import function of the server. Performs game actions for each player.
  */
-void Server::performGameCycle()
+void Server::performGameCycle(Map* map)
 {
-    // TODO : Iterate through each player to perform move commands !
+    // TODO(flavienbwk) : Iterate through each client's player to perform move commands !
+    this->clients;
+    // TODO(reloadaxe) : Perform map & player effects
+    // TODO(flavienbwk) : Clear players command and increment game cycle
 }

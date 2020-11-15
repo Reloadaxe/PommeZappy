@@ -3,6 +3,7 @@
 #include "main.h"
 #include "Server.h"
 #include "Map.hh"
+#include "game_utils.h"
 
 uint64_t timeSinceEpochMillisec()
 {
@@ -35,10 +36,9 @@ int main(int argc, char **argv)
         << "Cycling map every " << cycle_interval << " ms\n"
         << std::endl;
 
-    // Initializing game
+    // Initializing game elements
     Map *map = Map::Get(map_height, map_width);
-    std::vector<Player> players;
-    // TODO : Attribute its position to each player
+    std::vector<Player*> players = get_init_players(map, nb_players);
     long current_game_cycle = 0;
     uint64_t last_cycle_time = -1;
 
@@ -49,13 +49,14 @@ int main(int argc, char **argv)
     std::cout << "Waiting for " << nb_players << " players to join..." << std::endl;
     while (static_cast<int>(server->getClients().size()) < nb_players);
     server->refuseAdditionalClients();
-    // TODO : Attribute each Player to a Client (and reciprocally?)
     std::cout << "Perfect, " << nb_players << " joined !" << std::endl;
+    std::cout << "Initializating game players..." << std::endl;
+    associate_players_to_clients(players, server->getClients());
+    associate_map_to_clients(map, server->getClients());
     std::cout << "Starting the game..." << std::endl;
 
-    // Periodically checking if all players are whether disconnected OR dead (TODO)
-    while (
-        server->areAllClientsDisconnected() == false)
+    // Periodically checking if all players are whether disconnected (DONE) OR dead (TODO)
+    while (server->areAllClientsDisconnected() == false)
     {
         uint64_t current_time = timeSinceEpochMillisec();
         if (current_time - last_cycle_time >= (ulong)cycle_interval)
@@ -63,7 +64,7 @@ int main(int argc, char **argv)
             current_game_cycle += 1;
             last_cycle_time = current_time;
             std::cout << "Currently running game cycle " << current_game_cycle << "..." << std::endl;
-            server->performGameCycle(); // TODO : Should probably be inside a Game class or in game_utils when commons/*.cpp compile
+            server->performGameCycle(map);
             map->Show();
         }
     }

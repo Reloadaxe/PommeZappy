@@ -18,6 +18,7 @@ SOURCES +=  \
     Cell.cpp \
     Map.cpp \
     Player.cpp \
+    game_commands.cpp \
     game_utils.cpp \
     parser_service.cpp \
     parser_utils.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     Cell.hh \
     Map.hh \
     Player.hh \
+    game_commands.h \
     game_utils.h \
     parser_service.h \
     main.h \

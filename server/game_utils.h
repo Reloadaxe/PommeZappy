@@ -8,6 +8,13 @@
 #include <map>
 #include <algorithm>
 
-std::string get_command_type(std::string command);
+#include "Client.h"
+#include "Player.hh"
+#include "Map.hh"
+
+std::vector<Player*> get_init_players(Map* map, int nb_players);
+
+void associate_players_to_clients(std::vector<Player*> players, std::vector<Client*> clients);
+void associate_map_to_clients(Map* map, std::vector<Client*> clients);
 
 #endif // GAME_UTILS_H

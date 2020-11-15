@@ -116,6 +116,7 @@ bool Player::CanAttack(void) const
         }
         return false;
     }
+    return false;
 }
 
 void Player::Attack(void) const
