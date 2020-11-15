@@ -73,16 +73,23 @@ cmd_prfm_func_ptr get_prfm_command_fnc(std::string command)
  */
 QString cmd_register(Client* client, std::string command)
 {
-    // Check if player already has already played for this cycle
-    if (client->getCommand().isEmpty())
+    cmd_rgtr_func_ptr command_fnc = get_rgtr_command_fnc(command);
+    if (command_fnc != nullptr)
     {
-        // If command is a "move" one, stores it into client for its next game cycle
+        // Checking if command is a "move" one
         if (MOVE_COMMAND_NAMES.find(command) != MOVE_COMMAND_NAMES.end())
-            client->setCommand(QString::fromUtf8(command.c_str()));
-        // If function exist for this command, return its result
-        cmd_rgtr_func_ptr command_fnc = get_rgtr_command_fnc(command);
-        if (command_fnc != nullptr)
+        {
+            // If client has not already played for the next cycle,
+            // store its command.
+            if (client->getCommand().isEmpty())
+            {
+                client->setCommand(QString::fromUtf8(command.c_str()));
+                return command_fnc(client);
+            }
+        } else {
+            // Allow any non-move command
             return command_fnc(client);
+        }
     }
     return QString::fromUtf8(get_response_ko(command).c_str());
 }
@@ -161,19 +168,16 @@ QString cmd_register_inspect(Client* client)
 
 QString cmd_register_map(Client* client)
 {
-    // Check if move is possible
+    // Return "map" details
     client->getMap();
-    client->getPlayer();
-    // Return answer
     return "{}";
 }
 
 QString cmd_register_me(Client* client)
 {
-    // Check if move is possible
-    client->getMap();
+    // Return "me" details
+    client->getClientId();
     client->getPlayer();
-    // Return answer
     return "{}";
 }
 
@@ -263,20 +267,3 @@ void cmd_perform_inspect(Client* client)
     client->getMap();
     client->getPlayer();
 }
-
-void cmd_perform_map(Client* client)
-{
-    // If player move is possible, deal with
-    // effects (energy, attack...).
-    client->getMap();
-    client->getPlayer();
-}
-
-void cmd_perform_me(Client* client)
-{
-    // If player move is possible, deal with
-    // effects (energy, attack...).
-    client->getMap();
-    client->getPlayer();
-}
-
