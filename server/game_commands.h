@@ -40,7 +40,5 @@ void cmd_perform_rightfwd(Client* client);
 void cmd_perform_jump(Client* client);
 void cmd_perform_back(Client* client);
 void cmd_perform_inspect(Client* client);
-void cmd_perform_map(Client* client);
-void cmd_perform_me(Client* client);
 
 #endif // GAME_COMMANDS_H
