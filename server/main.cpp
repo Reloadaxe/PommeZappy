@@ -55,7 +55,10 @@ int main(int argc, char **argv)
     associate_map_to_clients(map, server->getClients());
     std::cout << "Starting the game..." << std::endl;
 
-    // Periodically checking if all players are whether disconnected (DONE) OR dead (TODO)
+    // Periodically checking if :
+    // - all players are disconnected (DONE)
+    // - all players are dead (TODO)
+    // - one player is left alive (TODO)
     while (server->areAllClientsDisconnected() == false)
     {
         uint64_t current_time = timeSinceEpochMillisec();

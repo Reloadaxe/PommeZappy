@@ -6,7 +6,7 @@
 //                  la commande est réalisable.
 // cmd_perform    pour effectuer lors du game cycle la commande enregistrée
 
-std::map<std::string, cmd_func_ptr> COMMANDS {
+std::map<std::string, cmd_rgtr_func_ptr> REGISTER_COMMANDS {
     {"left", &cmd_register_left},
     {"right", &cmd_register_right},
     {"fwd", &cmd_register_fwd},
@@ -17,6 +17,17 @@ std::map<std::string, cmd_func_ptr> COMMANDS {
     {"inspect", &cmd_register_inspect},
     {"map", &cmd_register_map},
     {"me", &cmd_register_me}
+};
+
+std::map<std::string, cmd_prfm_func_ptr> PERFORM_COMMANDS {
+    {"left", &cmd_perform_left},
+    {"right", &cmd_perform_right},
+    {"fwd", &cmd_perform_fwd},
+    {"leftfwd", &cmd_perform_leftfwd},
+    {"rightfwd", &cmd_perform_rightfwd},
+    {"jump", &cmd_perform_jump},
+    {"back", &cmd_perform_back},
+    {"inspect", &cmd_perform_inspect}
 };
 
 std::set<std::string> MOVE_COMMAND_NAMES {
@@ -30,14 +41,28 @@ std::set<std::string> MOVE_COMMAND_NAMES {
     "inspect"
 };
 
-cmd_func_ptr get_command_fnc(std::string command)
+cmd_rgtr_func_ptr get_rgtr_command_fnc(std::string command)
 {
-    std::map<std::string, cmd_func_ptr>::const_iterator pos = COMMANDS.find(command);
-    if (pos == COMMANDS.end())
+    std::map<std::string, cmd_rgtr_func_ptr>::const_iterator pos = REGISTER_COMMANDS.find(command);
+    if (pos == REGISTER_COMMANDS.end())
         return pos->second;
     return nullptr;
 }
 
+cmd_prfm_func_ptr get_prfm_command_fnc(std::string command)
+{
+    std::map<std::string, cmd_prfm_func_ptr>::const_iterator pos = PERFORM_COMMANDS.find(command);
+    if (pos == PERFORM_COMMANDS.end())
+        return pos->second;
+    return nullptr;
+}
+
+
+/*
+ * ===============
+ * REGISTER COMMANDS
+ * ===============
+ */
 
 /**
  * @brief cmd_register
@@ -51,10 +76,11 @@ QString cmd_register(Client* client, std::string command)
     // Check if player already has already played for this cycle
     if (client->getCommand().isEmpty())
     {
+        // If command is a "move" one, stores it into client for its next game cycle
         if (MOVE_COMMAND_NAMES.find(command) != MOVE_COMMAND_NAMES.end())
             client->setCommand(QString::fromUtf8(command.c_str()));
-        cmd_func_ptr command_fnc = get_command_fnc(command);
         // If function exist for this command, return its result
+        cmd_rgtr_func_ptr command_fnc = get_rgtr_command_fnc(command);
         if (command_fnc != nullptr)
             return command_fnc(client);
     }
@@ -66,83 +92,191 @@ QString cmd_register_left(Client* client)
     // Check if move is possible
     client->getMap();
     client->getPlayer();
-    // Register command
-
     // Return answer
-    return "";
+    return "{}";
 }
 
 QString cmd_register_right(Client* client)
 {
+    // Check if move is possible
     client->getMap();
     client->getPlayer();
-    return "";
+    // Return answer
+    return "{}";
 }
 
 QString cmd_register_fwd(Client* client)
 {
+    // Check if move is possible
     client->getMap();
     client->getPlayer();
-    return "";
+    // Return answer
+    return "{}";
 }
 
 QString cmd_register_leftfwd(Client* client)
 {
+    // Check if move is possible
     client->getMap();
     client->getPlayer();
-    return "";
+    // Return answer
+    return "{}";
 }
 
 QString cmd_register_rightfwd(Client* client)
 {
+    // Check if move is possible
     client->getMap();
     client->getPlayer();
-    return "";
+    // Return answer
+    return "{}";
 }
 
 QString cmd_register_jump(Client* client)
 {
+    // Check if move is possible
     client->getMap();
     client->getPlayer();
-    return "";
+    // Return answer
+    return "{}";
 }
 
 QString cmd_register_back(Client* client)
 {
+    // Check if move is possible
     client->getMap();
     client->getPlayer();
-    return "";
+    // Return answer
+    return "{}";
 }
 
 QString cmd_register_inspect(Client* client)
 {
+    // Check if move is possible
     client->getMap();
     client->getPlayer();
-    return "";
+    // Return answer
+    return "{}";
 }
 
 QString cmd_register_map(Client* client)
 {
+    // Check if move is possible
     client->getMap();
     client->getPlayer();
-    return "";
+    // Return answer
+    return "{}";
 }
 
 QString cmd_register_me(Client* client)
 {
+    // Check if move is possible
     client->getMap();
     client->getPlayer();
-    return "";
+    // Return answer
+    return "{}";
 }
 
 
-QString cmd_perform(Client* client)
+/*
+ * ===============
+ * PERFORM COMMANDS
+ * ===============
+ */
+
+/**
+ * @brief cmd_perform
+ * Performs the player commands and update Map accordingly.
+ * Reminder : Only move commands have been registered from here.
+ * @param client
+ */
+void cmd_perform(Client* client)
 {
-
-    // Deal with effects (energy, attack
-    client->getMap();
-    client->getPlayer();
-    return "";
+    if (client->getCommand().isEmpty())
+        return;
+    // If function exist for this command, perform it
+    cmd_prfm_func_ptr command_fnc = get_prfm_command_fnc(client->getCommand().toStdString());
+    if (command_fnc != nullptr)
+        return command_fnc(client);
 }
 
+void cmd_perform_left(Client* client)
+{
+    // If player move is possible, deal with
+    // effects (energy, attack...).
+    client->getMap();
+    client->getPlayer();
+}
+
+void cmd_perform_right(Client* client)
+{
+    // If player move is possible, deal with
+    // effects (energy, attack...).
+    client->getMap();
+    client->getPlayer();
+}
+
+void cmd_perform_fwd(Client* client)
+{
+    // If player move is possible, deal with
+    // effects (energy, attack...).
+    client->getMap();
+    client->getPlayer();
+}
+
+void cmd_perform_leftfwd(Client* client)
+{
+    // If player move is possible, deal with
+    // effects (energy, attack...).
+    client->getMap();
+    client->getPlayer();
+}
+
+void cmd_perform_rightfwd(Client* client)
+{
+    // If player move is possible, deal with
+    // effects (energy, attack...).
+    client->getMap();
+    client->getPlayer();
+}
+
+void cmd_perform_jump(Client* client)
+{
+    // If player move is possible, deal with
+    // effects (energy, attack...).
+    client->getMap();
+    client->getPlayer();
+}
+
+void cmd_perform_back(Client* client)
+{
+    // If player move is possible, deal with
+    // effects (energy, attack...).
+    client->getMap();
+    client->getPlayer();
+}
+
+void cmd_perform_inspect(Client* client)
+{
+    // If player move is possible, deal with
+    // effects (energy, attack...).
+    client->getMap();
+    client->getPlayer();
+}
+
+void cmd_perform_map(Client* client)
+{
+    // If player move is possible, deal with
+    // effects (energy, attack...).
+    client->getMap();
+    client->getPlayer();
+}
+
+void cmd_perform_me(Client* client)
+{
+    // If player move is possible, deal with
+    // effects (energy, attack...).
+    client->getMap();
+    client->getPlayer();
+}
 

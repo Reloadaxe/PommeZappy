@@ -26,8 +26,6 @@ public:
     Player* getPlayer();
     void setMap(Map* map);
     Map* getMap();
-    void setGameCycle(long game_cycle);
-    long getGameCycle();
 
     void setClientId(QString client_id);
     QString getClientId();
@@ -47,7 +45,6 @@ private:
     Map* map;                               // Pointing to associated map
     Player* player;                         // Pointing to associated player
     QString move_command = "";              // next move command to play
-    long game_cycle = -1;
 };
 
 #endif

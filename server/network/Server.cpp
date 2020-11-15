@@ -143,8 +143,15 @@ void Server::respondToCommand(Client* client, QString command)
  */
 void Server::performGameCycle(Map* map)
 {
-    // TODO(flavienbwk) : Iterate through each client's player to perform move commands !
-    this->clients;
-    // TODO(reloadaxe) : Perform map & player effects
-    // TODO(flavienbwk) : Clear players command and increment game cycle
+    // Iterate through each client's player to perform move commands !
+    std::map<QTcpSocket*, Client>::iterator it;
+    for (it = this->clients.begin(); it != this->clients.end(); it++)
+        cmd_perform(&it->second);
+
+    // TODO(reloadaxe) : Perform map & player effects/updates
+    map->GetHeight(); // avoiding -Wunused
+
+    // Clear players command for next cycle
+    for (it = this->clients.begin(); it != this->clients.end(); it++)
+        it->second.clearCommand();
 }

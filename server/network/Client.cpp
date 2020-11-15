@@ -41,16 +41,6 @@ Map* Client::getMap()
     return this->map;
 }
 
-void Client::setGameCycle(long game_cycle)
-{
-    this->game_cycle = game_cycle;
-}
-
-long Client::getGameCycle()
-{
-    return this->game_cycle;
-}
-
 void Client::disconnect()
 {
     this->socket->disconnect();
