@@ -9,13 +9,11 @@
 
 void clear_screen()
 {
-    #if defined _WIN32
-        system("cls");
-    #elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
-        system("clear");
-    #elif defined (__APPLE__)
-        system("clear");
-    #endif
+    int clear = 50;
+    do {
+        std::cout << std::endl;
+        clear -= 1;
+    } while (clear !=0);
 }
 
 uint64_t timeSinceEpochMillisec()
