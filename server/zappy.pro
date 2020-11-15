@@ -14,14 +14,14 @@ SOURCES +=  \
     ./network/Client.cpp \
     ./network/Server.cpp \
     ./network/server_utils.cpp \
-    #../commons/Item.cpp \
-    #Cell.cpp \
-    #Map.cpp \
-    #Player.cpp \
+    ../commons/Item.cpp \
+    Cell.cpp \
+    Map.cpp \
+    Player.cpp \
     game_utils.cpp \
     parser_service.cpp \
     parser_utils.cpp \
-    server.cpp
+    main.cpp
 
 INCLUDEPATH += \
     ./network \
@@ -36,11 +36,11 @@ HEADERS += \
     ./network/Client.h \
     ./network/Server.h \
     ./network/server_utils.h \
-    #../commons/Item.hh \
-    #Cell.hh \
-    #Map.hh \
-    #Player.hh \
+    ../commons/Item.hh \
+    Cell.hh \
+    Map.hh \
+    Player.hh \
     game_utils.h \
     parser_service.h \
-    server.h \
+    main.h \
     parser_utils.h
