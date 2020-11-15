@@ -34,7 +34,7 @@ void Server::refuseAdditionalClients()
     this->refuse_additional_clients = true;
 }
 
-void Server::incomingConnection(int socketDescriptor)
+void Server::incomingConnection(qintptr socketDescriptor)
 {
     QTcpSocket *socket_client = new QTcpSocket(this);
     socket_client->setSocketDescriptor(socketDescriptor);
