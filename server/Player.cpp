@@ -1,11 +1,13 @@
 #include "Player.hh"
 
+std::vector<bool> Player::_ids;
+
 Player::Player(const unsigned int y, const unsigned int x) : _energy(2), _lifePoints(10), _victoryPoints(0), _orientation(North), _y(y), _x(x)
 {
-    std::vector<bool>::iterator it = std::find(_ids.begin(), _ids.end(), false);
+    const std::vector<bool>::iterator it = std::find(_ids.begin(), _ids.end(), false);
     if (it != _ids.end())
     {
-        int index = std::distance(_ids.begin(), it);
+        const int index = std::distance(_ids.begin(), it);
         _id = _ids.at(index);
         _ids.at(index) = true;
     }
@@ -46,14 +48,14 @@ void Player::ResetEnergy(void)
     _energy = 2;
 }
 
-void Player::RemoveEnergy()
+void Player::RemoveEnergy(void)
 {
     _energy--;
 }
 
-bool Player::CanMove()
+bool Player::CanMove(void) const
 {
-    Map *map = Map::Get();
+    const Map *map = Map::Get();
     switch (_orientation)
     {
     case North:
@@ -84,9 +86,9 @@ bool Player::CanMove()
     return false;
 }
 
-bool Player::CanAttack()
+bool Player::CanAttack(void) const
 {
-    Map *map = Map::Get();
+    const Map *map = Map::Get();
     switch (_orientation)
     {
     case North:
@@ -116,9 +118,9 @@ bool Player::CanAttack()
     }
 }
 
-void Player::Attack()
+void Player::Attack(void) const
 {
-    Map *map = Map::Get();
+    const Map *map = Map::Get();
     Player *player;
     switch (_orientation)
     {
@@ -138,9 +140,9 @@ void Player::Attack()
     player->RemoveLifePoint();
 }
 
-void Player::Move()
+void Player::Move(void)
 {
-    Map *map = Map::Get();
+    const Map *map = Map::Get();
     map->GetCellAt(_y, _x)->RemovePlayer();
 
     switch (_orientation)
@@ -162,7 +164,7 @@ void Player::Move()
     map->GetCellAt(_y, _x)->SetPlayer(this);
 }
 
-bool Player::DoCommand(Command command)
+bool Player::DoCommand(const Command command)
 {
     switch (command)
     {

@@ -4,6 +4,7 @@
 class Item {
     public:
         Item(const char c);
+        virtual ~Item();
         virtual void DoAction(void) = 0;
         char GetChar(void);
 

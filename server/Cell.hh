@@ -4,19 +4,20 @@
 #include "Item.hh"
 #include "Player.hh"
 
+class Player;
 class Cell {
     public:
-        Cell(unsigned int y, unsigned int x);
-        Item *GetItem(void);
+        Cell(const unsigned int y, const unsigned int x);
+        Item *GetItem(void) const;
         void RemoveItem(void);
-        Player *GetPlayer(void);
+        Player *GetPlayer(void) const;
         void RemovePlayer(void);
         void SetPlayer(Player *player);
-        void Show(void);
+        void Show(void) const;
 
     private:
-        unsigned int _y;
-        unsigned int _x;
+        const unsigned int _y;
+        const unsigned int _x;
         Item *_item;
         Player *_player;
 };

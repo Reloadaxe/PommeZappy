@@ -1,19 +1,15 @@
 #include "Map.hh"
 
-Map::Map(void) {}
-Map::Map(unsigned int height, unsigned int width) : _height(height), _width(width) {}
+Map::Map(const unsigned int height, const unsigned int width) : _height(height), _width(width) {}
 
 Map *Map::_map = nullptr;
 
 Map *Map::Get(void)
 {
-    if (_map == nullptr) {
-        _map = new Map();
-    }
-    return _map;
+    return _map == nullptr ? nullptr : _map;
 }
 
-Map *Map::Get(unsigned int height, unsigned int width)
+Map *Map::Get(const unsigned int height, const unsigned int width)
 {
     if (_map == nullptr) {
         _map = new Map(height, width);
@@ -21,22 +17,22 @@ Map *Map::Get(unsigned int height, unsigned int width)
     return _map;
 }
 
-unsigned int Map::GetWidth(void)
+unsigned int Map::GetWidth(void) const
 {
     return _width;
 }
 
-unsigned int Map::GetHeight(void)
+unsigned int Map::GetHeight(void) const
 {
     return _height;
 }
 
-Cell *Map::GetCellAt(unsigned int y, unsigned int x)
+Cell *Map::GetCellAt(const unsigned int y, const unsigned int x) const
 {
     return _cells.at(y).at(x);
 }
 
-void Map::Show(void)
+void Map::Show(void) const
 {
     for (std::vector<Cell*> cellsLine: _cells) {
         for (Cell *cell : cellsLine) {

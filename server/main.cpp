@@ -1,8 +1,8 @@
 #include <chrono>
 
-#include "server.h"
+#include "main.h"
 #include "Server.h"
-// #include "Map.hh"
+#include "Map.hh"
 
 uint64_t timeSinceEpochMillisec()
 {
@@ -36,8 +36,8 @@ int main(int argc, char **argv)
         << std::endl;
 
     // Initializing game
-    // TODO : Map *map = Map::Get(map_height, map_width);
-    // TODO : std::vector<Players> players;
+    Map *map = Map::Get(map_height, map_width);
+    std::vector<Player> players;
     // TODO : Attribute its position to each player
     long current_game_cycle = 0;
     uint64_t last_cycle_time = -1;
@@ -64,7 +64,7 @@ int main(int argc, char **argv)
             last_cycle_time = current_time;
             std::cout << "Currently running game cycle " << current_game_cycle << "..." << std::endl;
             server->performGameCycle(); // TODO : Should probably be inside a Game class or in game_utils when commons/*.cpp compile
-            // map->Show();
+            map->Show();
         }
     }
 
