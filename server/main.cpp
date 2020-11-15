@@ -1,9 +1,22 @@
 #include <chrono>
+#include <string>
+#include <iostream>
 
 #include "main.h"
 #include "Server.h"
 #include "Map.hh"
 #include "game_utils.h"
+
+void clear_screen()
+{
+    #if defined _WIN32
+        system("cls");
+    #elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
+        system("clear");
+    #elif defined (__APPLE__)
+        system("clear");
+    #endif
+}
 
 uint64_t timeSinceEpochMillisec()
 {
@@ -40,7 +53,7 @@ int main(int argc, char **argv)
     Map *map = Map::Get(map_height, map_width);
     std::vector<Player*> players = get_init_players(map, nb_players);
     long current_game_cycle = 0;
-    uint64_t last_cycle_time = -1;
+    uint64_t last_cycle_time = 0;
 
     // Initializing server
     Server *server = Server::getInstance(host, port, nb_players);
@@ -64,11 +77,12 @@ int main(int argc, char **argv)
         uint64_t current_time = timeSinceEpochMillisec();
         if (current_time - last_cycle_time >= (ulong)cycle_interval)
         {
+            clear_screen();
+            server->performGameCycle(map);
+            map->Show();
             current_game_cycle += 1;
             last_cycle_time = current_time;
             std::cout << "Currently running game cycle " << current_game_cycle << "..." << std::endl;
-            server->performGameCycle(map);
-            map->Show();
         }
     }
 

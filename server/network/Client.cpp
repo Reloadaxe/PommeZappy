@@ -56,21 +56,6 @@ QString Client::getClientId()
     return this->client_id;
 }
 
-void Client::setCommand(QString command)
-{
-    this->move_command = command;
-}
-
-QString Client::getCommand()
-{
-    return this->move_command;
-}
-
-void Client::clearCommand()
-{
-    this->move_command = "";
-}
-
 QTcpSocket* Client::getSocket()
 {
     return this->socket;

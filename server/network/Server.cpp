@@ -133,25 +133,20 @@ bool Server::areAllClientsDisconnected()
 void Server::respondToCommand(Client* client, QString command)
 {
     client->getSocket()->write(
-        cmd_register(client, command.toStdString()).toStdString().c_str()
+        cmd_perform(client, command.toStdString()).toStdString().c_str()
     );
 }
 
 /**
  * @brief performGameCycle
- * Most import function of the server. Performs game actions for each player.
+ * This function is called each cycle to reinitialize the energy
+ * of players to 2.
  */
 void Server::performGameCycle(Map* map)
 {
-    // Iterate through each client's player to perform move commands !
     std::map<QTcpSocket*, Client>::iterator it;
     for (it = this->clients.begin(); it != this->clients.end(); it++)
-        cmd_perform(&it->second);
-
-    // TODO(reloadaxe) : Perform map & player effects/updates
-    map->GetHeight(); // avoiding -Wunused
-
-    // Clear players command for next cycle
-    for (it = this->clients.begin(); it != this->clients.end(); it++)
-        it->second.clearCommand();
+        it->second.getPlayer()->ResetEnergy();
+    // TODO : Le serveur génère une nouvelle pierre sur la carte, de type aléatoire.
+    map->GetWidth(); // Avoiding -Wunused
 }
