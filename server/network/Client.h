@@ -30,10 +30,6 @@ public:
     void setClientId(QString client_id);
     QString getClientId();
 
-    void setCommand(QString command);       // Sets the next command to play
-    QString getCommand();                   // Returns the next command to play
-    void clearCommand();                    // Clears the command saved
-
     void disconnect();                      // Drops the socket connection
     QTcpSocket* getSocket();
     bool isConnected();
@@ -44,7 +40,6 @@ private:
 
     Map* map;                               // Pointing to associated map
     Player* player;                         // Pointing to associated player
-    QString move_command = "";              // next move command to play
 };
 
 #endif
