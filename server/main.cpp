@@ -49,6 +49,7 @@ int main(int argc, char **argv)
 
     // Initializing game elements
     Map *map = Map::Get(map_height, map_width);
+    Player::SetIds(nb_players);
     std::vector<Player*> players = get_init_players(map, nb_players);
     long current_game_cycle = 0;
     uint64_t last_cycle_time = 0;

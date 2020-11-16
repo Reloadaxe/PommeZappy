@@ -1,15 +1,15 @@
 #include "Player.hh"
 
-std::vector<bool> Player::_ids;
+std::vector<bool> *Player::_ids = nullptr;
 
-Player::Player(const unsigned int y, const unsigned int x) : _energy(2), _lifePoints(10), _victoryPoints(0), _orientation(North), _y(y), _x(x)
+Player::Player(const unsigned int y, const unsigned int x) : _energy(2), _lifePoints(10), _victoryPoints(0), _orientation(North), _y(y), _x(x), _client(nullptr)
 {
-    const std::vector<bool>::iterator it = std::find(_ids.begin(), _ids.end(), false);
-    if (it != _ids.end())
+    const std::vector<bool>::iterator it = std::find(_ids->begin(), _ids->end(), false);
+    if (it != _ids->end())
     {
-        const int index = std::distance(_ids.begin(), it);
-        _id = _ids.at(index);
-        _ids.at(index) = true;
+        const int index = std::distance(_ids->begin(), it);
+        _id = _ids->at(index);
+        _ids->at(index) = true;
     }
     else
     {
@@ -17,10 +17,35 @@ Player::Player(const unsigned int y, const unsigned int x) : _energy(2), _lifePo
     }
 }
 
+void Player::SetClient(Client *client)
+{
+    _client = client;
+}
+
+Client *Player::GetClient(void) const
+{
+    return _client;
+}
+
+unsigned int Player::GetId(void) const
+{
+    return _id;
+}
+
+unsigned int Player::GetY(void) const
+{
+    return _y;
+}
+
+unsigned int Player::GetX(void) const
+{
+    return _x;
+}
+
 void Player::SetIds(const unsigned int size)
 {
-    _ids.clear();
-    std::fill(_ids.begin(), _ids.begin() + size, false);
+    _ids->clear();
+    std::fill(_ids->begin(), _ids->begin() + size, false);
 }
 
 void Player::AddLifePoint(void)
@@ -53,98 +78,62 @@ void Player::RemoveEnergy(void)
     _energy--;
 }
 
-bool Player::CanMove(void) const
+bool Player::CanMove(const Map *map) const
 {
-    const Map *map = Map::Get();
     switch (_orientation)
     {
     case North:
-        if (_y > 0)
-        {
-            return true;
-        }
-        return false;
+        return _y - 1 > 0;
     case East:
-        if (_x < map->GetWidth() - 1)
-        {
-            return true;
-        }
-        return false;
+        return _x + 1 < map->GetWidth() - 1;
     case South:
-        if (_y < map->GetHeight() - 1)
-        {
-            return true;
-        }
-        return false;
+        return _y + 1 < map->GetHeight() - 1;
     case West:
-        if (_x > 0)
-        {
-            return true;
-        }
-        return false;
+        return _x - 1 > 0;
     }
     return false;
 }
 
-bool Player::CanAttack(void) const
+bool Player::CanAttack(const Map *map) const
 {
-    const Map *map = Map::Get();
     switch (_orientation)
     {
     case North:
-        if (map->GetCellAt(_y - 1, _x)->GetPlayer() != nullptr)
-        {
-            return true;
-        }
-        return false;
+        return map->GetCellAt(_y - 1, _x)->GetClient() != nullptr;
     case East:
-        if (map->GetCellAt(_y, _x + 1)->GetPlayer() != nullptr)
-        {
-            return true;
-        }
-        return false;
+        return map->GetCellAt(_y, _x + 1)->GetClient() != nullptr;
     case South:
-        if (map->GetCellAt(_y + 1, _x)->GetPlayer() != nullptr)
-        {
-            return true;
-        }
-        return false;
+        return map->GetCellAt(_y + 1, _x)->GetClient() != nullptr;
     case West:
-        if (map->GetCellAt(_y, _x - 1)->GetPlayer() != nullptr)
-        {
-            return true;
-        }
-        return false;
+        return map->GetCellAt(_y, _x - 1)->GetClient() != nullptr;
     }
     return false;
 }
 
-void Player::Attack(void) const
+void Player::Attack(const Map *map) const
 {
-    const Map *map = Map::Get();
-    Player *player;
+    Client *client;
     switch (_orientation)
     {
     case North:
-        player = map->GetCellAt(_y - 1, _x)->GetPlayer();
+        client = map->GetCellAt(_y - 1, _x)->GetClient();
         break;
     case East:
-        player = map->GetCellAt(_y, _x + 1)->GetPlayer();
+        client = map->GetCellAt(_y, _x + 1)->GetClient();
         break;
     case South:
-        player = map->GetCellAt(_y + 1, _x)->GetPlayer();
+        client = map->GetCellAt(_y + 1, _x)->GetClient();
         break;
     case West:
-        player = map->GetCellAt(_y, _x - 1)->GetPlayer();
+        client = map->GetCellAt(_y, _x - 1)->GetClient();
         break;
     }
-    player->RemoveLifePoint();
+    client->getPlayer()->RemoveLifePoint();
 }
 
-void Player::Move(void)
+void Player::Move(const Map *map)
 {
-    const Map *map = Map::Get();
-    map->GetCellAt(_y, _x)->RemovePlayer();
+    map->GetCellAt(_y, _x)->RemoveClient();
 
     switch (_orientation)
     {
@@ -162,66 +151,98 @@ void Player::Move(void)
         break;
     }
 
-    map->GetCellAt(_y, _x)->SetPlayer(this);
+    map->GetCellAt(_y, _x)->SetClient(GetClient());
 }
 
-bool Player::DoCommand(const Command command)
+bool Player::CanJump(const Map *map) const
 {
-    switch (command)
+    switch (_orientation)
     {
-    case left:
-        _orientation = (Direction)((int)_orientation > 0 ? (int)_orientation - 1 : 3);
-        return true;
-    case right:
-        _orientation = (Direction)(((unsigned int)_orientation + 1) % 4);
-        break;
-    case fwd:
-        if (!CanMove())
-        {
-            return false;
-        }
-        if (CanAttack())
-        {
-            Attack();
-        }
-        else
-        {
-            Move();
-        }
-        return true;
-    case rightfwd:
-        if (!DoCommand(right) || !DoCommand(fwd))
-        {
-            return false;
-        }
-        return true;
-    case leftfwd:
-        if (!DoCommand(left) || DoCommand(fwd))
-        {
-            return false;
-        }
-        return true;
-    case jump:
-        for (unsigned int i = 0; i < 3; i++)
-        {
-            if (!CanMove())
-            {
+    case North:
+        return _y - 3 > 0 && map->GetCellAt(_y - 3, _x)->GetClient() == nullptr;
+    case East:
+        return _x + 3 < map->GetWidth() - 1 && map->GetCellAt(_y, _x + 3)->GetClient() == nullptr;
+    case South:
+        return _y + 3 < map->GetHeight() - 1 && map->GetCellAt(_y + 3, _x)->GetClient() == nullptr;
+    case West:
+        return _x - 3 > 0 && map->GetCellAt(_y, _x - 3)->GetClient() == nullptr;
+    }
+    return false;
+}
+
+bool Player::DoCommand(const Command command, const Map *map)
+{
+    switch (command) {
+        case Command::left:
+            _orientation = (Direction)((int)_orientation > 0 ? (int)_orientation - 1 : 3);
+            break;
+        case Command::right:
+            _orientation = (Direction)(((unsigned int)_orientation + 1) % 4);
+            break;
+        case Command::fwd:
+            if (!CanMove(map))
                 return false;
-            }
-            Move();
-        }
-        RemoveEnergy();
-        return true;
-    case back:
-        break;
-    case inspect:
-        break;
-    case me:
-        break;
+            if (CanAttack(map))
+                Attack(map);
+            else
+                Move(map);
+            break;
+        case Command::rightfwd:
+            if (!DoCommand(Command::right, map) || !DoCommand(Command::fwd, map))
+                return false;
+            break;
+        case Command::leftfwd:
+            if (!DoCommand(Command::left, map) || DoCommand(Command::fwd, map))
+                return false;
+            break;
+        case Command::jump:
+            if (!CanJump(map))
+                return false;
+            for (unsigned int i = 0; i < 3; i++)
+                Move(map);
+            RemoveEnergy();
+            break;
+        case Command::back:
+            _orientation = (Direction)(((unsigned int)_orientation + 2) % 4);
+            if (!DoCommand(Command::fwd, map))
+                return false;
+            break;
     }
-    if (command != me)
-    {
-        RemoveEnergy();
-    }
+    RemoveEnergy();
     return true;
+}
+
+Direction Player::GetOrientation() const
+{
+    return _orientation;
+}
+
+QString Player::GetOrientationStr(const Direction orientation) const
+{
+    switch (orientation) {
+        case North:
+            return "North";
+        case East:
+            return "East";
+        case South:
+            return "South";
+        case West:
+            return "West";
+    }
+    return "";
+}
+
+QJsonObject Player::getInformations(const int id, const bool all) const
+{
+    QJsonObject informations;
+
+    informations.insert("id", id);
+    informations.insert("life", (int)_lifePoints);
+    informations.insert("victory", (int)_victoryPoints);
+    if (all) {
+        informations.insert("energy", (int)_energy);
+        informations.insert("orientation", GetOrientationStr(_orientation));
+    }
+
+    return informations;
 }

@@ -16,8 +16,8 @@ SOURCES +=  \
     ./network/server_utils.cpp \
     ../commons/Item.cpp \
     Cell.cpp \
-    Map.cpp \
     Player.cpp \
+    Map.cpp \
     game_commands.cpp \
     game_utils.cpp \
     parser_service.cpp \
@@ -39,8 +39,9 @@ HEADERS += \
     ./network/server_utils.h \
     ../commons/Item.hh \
     Cell.hh \
-    Map.hh \
+    game_enums.hh \
     Player.hh \
+    Map.hh \
     game_commands.h \
     game_utils.h \
     parser_service.h \

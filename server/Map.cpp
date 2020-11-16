@@ -43,3 +43,54 @@ void Map::Show(void) const
         // }
     }
 }
+
+QString Map::GetPartContentAt(const unsigned int y, const unsigned int x) const
+{
+    if (y < 0 || y >= _height || x < 0 || x >= _width) {
+        return "";
+    }
+    Cell *cell = GetCellAt(y, x);
+    const Item *item = cell->GetItem();
+    if (item != nullptr) {
+        return (QChar)item->GetRepr();
+    }
+    const Client *client = cell->GetClient();
+    if (client != nullptr) {
+        return std::to_string(client->getPlayer()->GetId()).c_str();
+    }
+    return " ";
+}
+
+QJsonArray Map::GetPart(const Direction orientation, const unsigned int y, const unsigned int x) const
+{
+    QJsonArray part;
+
+    switch (orientation) {
+        case North:
+            part.append(GetPartContentAt(y - 1, x - 1));
+            part.append(GetPartContentAt(y - 1, x));
+            part.append(GetPartContentAt(y - 1, x + 1));
+            part.append(GetPartContentAt(y - 2, x));
+            break;
+        case East:
+            part.append(GetPartContentAt(y - 1, x + 1));
+            part.append(GetPartContentAt(y, x + 1));
+            part.append(GetPartContentAt(y + 1, x + 1));
+            part.append(GetPartContentAt(y, x + 2));
+            break;
+        case South:
+            part.append(GetPartContentAt(y + 1, x + 1));
+            part.append(GetPartContentAt(y + 1, x));
+            part.append(GetPartContentAt(y + 1, x - 1));
+            part.append(GetPartContentAt(y + 2, x));
+            break;
+        case West:
+            part.append(GetPartContentAt(y + 1, x - 1));
+            part.append(GetPartContentAt(y, x - 1));
+            part.append(GetPartContentAt(y - 1, x - 1));
+            part.append(GetPartContentAt(y, x - 2));
+            break;
+    }
+
+    return part;
+}

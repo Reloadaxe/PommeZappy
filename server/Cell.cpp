@@ -1,6 +1,6 @@
 #include "Cell.hh"
 
-Cell::Cell(const unsigned int y, const unsigned int x) : _y(y), _x(x), _item(nullptr), _player(nullptr) {}
+Cell::Cell(const unsigned int y, const unsigned int x) : _y(y), _x(x), _item(nullptr), _client(nullptr) {}
 
 Item *Cell::GetItem(void) const
 {
@@ -13,19 +13,19 @@ void Cell::RemoveItem(void)
     _item = nullptr;
 }
 
-Player *Cell::GetPlayer(void) const
+Client *Cell::GetClient(void) const
 {
-    return _player;
+    return _client;
 }
 
-void Cell::RemovePlayer(void)
+void Cell::RemoveClient(void)
 {
-    _player = nullptr;
+    _client = nullptr;
 }
 
-void Cell::SetPlayer(Player *player)
+void Cell::SetClient(Client *client)
 {
-    _player = player;
+    _client = client;
 }
 
 void Cell::Show(void) const

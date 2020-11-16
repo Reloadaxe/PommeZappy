@@ -57,88 +57,119 @@ QString cmd_perform(Client* client, std::string command)
 
 QString cmd_perform_left(Client* client)
 {
-    // Check if move is possible
-    client->getMap();
-    client->getPlayer();
-    // Make the player move on map
-    // Return answer
-    return "{}";
+    const bool success = client->getPlayer()->DoCommand(Command::left, client->getMap());
+    QJsonObject j;
+
+    j.insert("left", success ? "OK" : "KO");
+    QJsonDocument doc(j);
+
+    return doc.toJson(QJsonDocument::Compact);
 }
 
 QString cmd_perform_right(Client* client)
 {
-    // Check if move is possible
-    client->getMap();
-    client->getPlayer();
-    // Return answer
-    return "{}";
+    const bool success = client->getPlayer()->DoCommand(Command::right, client->getMap());
+    QJsonObject j;
+
+    j.insert("right", success ? "OK" : "KO");
+    QJsonDocument doc(j);
+
+    return doc.toJson(QJsonDocument::Compact);
 }
 
 QString cmd_perform_fwd(Client* client)
 {
-    // Check if move is possible
-    client->getMap();
-    client->getPlayer();
-    // Return answer
-    return "{}";
+    const bool success = client->getPlayer()->DoCommand(Command::fwd, client->getMap());
+    QJsonObject j;
+
+    j.insert("fwd", success ? "OK" : "KO");
+    QJsonDocument doc(j);
+
+    return doc.toJson(QJsonDocument::Compact);
 }
 
 QString cmd_perform_leftfwd(Client* client)
 {
-    // Check if move is possible
-    client->getMap();
-    client->getPlayer();
-    // Return answer
-    return "{}";
+    const bool success = client->getPlayer()->DoCommand(Command::leftfwd, client->getMap());
+    QJsonObject j;
+
+    j.insert("leftfwd", success ? "OK" : "KO");
+    QJsonDocument doc(j);
+
+    return doc.toJson(QJsonDocument::Compact);
 }
 
 QString cmd_perform_rightfwd(Client* client)
 {
-    // Check if move is possible
-    client->getMap();
-    client->getPlayer();
-    // Return answer
-    return "{}";
+    const bool success = client->getPlayer()->DoCommand(Command::rightfwd, client->getMap());
+    QJsonObject j;
+
+    j.insert("rightfwd", success ? "OK" : "KO");
+    QJsonDocument doc(j);
+
+    return doc.toJson(QJsonDocument::Compact);
 }
 
 QString cmd_perform_jump(Client* client)
 {
-    // Check if move is possible
-    client->getMap();
-    client->getPlayer();
-    // Return answer
-    return "{}";
+    const bool success = client->getPlayer()->DoCommand(Command::jump, client->getMap());
+    QJsonObject j;
+
+    j.insert("jump", success ? "OK" : "KO");
+    QJsonDocument doc(j);
+
+    return doc.toJson(QJsonDocument::Compact);
 }
 
 QString cmd_perform_back(Client* client)
 {
-    // Check if move is possible
-    client->getMap();
-    client->getPlayer();
-    // Return answer
-    return "{}";
+    const bool success = client->getPlayer()->DoCommand(Command::back, client->getMap());
+    QJsonObject j;
+
+    j.insert("back", success ? "OK" : "KO");
+    QJsonDocument doc(j);
+
+    return doc.toJson(QJsonDocument::Compact);
 }
 
 QString cmd_perform_inspect(Client* client)
 {
-    // Check if move is possible
-    client->getMap();
-    client->getPlayer();
-    // Return answer
-    return "{}";
+    std::vector<Client*> clients = Server::getInstance()->getClients();
+    QJsonObject j;
+
+    QJsonArray playersInformations;
+    for (Client *client : clients) {
+        const Player *player = client->getPlayer();
+        playersInformations.append(player->getInformations(player->GetId(), false));
+    }
+
+    j.insert("inspect", playersInformations);
+    QJsonDocument doc(j);
+
+    client->getPlayer()->RemoveEnergy();
+
+    return doc.toJson(QJsonDocument::Compact);
 }
 
 QString cmd_perform_map(Client* client)
 {
-    // Return "map" details
-    client->getMap();
-    return "{}";
+    const Player *player = client->getPlayer();
+    QJsonArray mapPart = client->getMap()->GetPart(player->GetOrientation(), player->GetY(), player->GetX());
+    QJsonObject j;
+
+    j.insert("map", mapPart);
+    QJsonDocument doc(j);
+
+    return doc.toJson(QJsonDocument::Compact);
 }
 
 QString cmd_perform_me(Client* client)
 {
-    // Return "me" details
-    client->getClientId();
-    client->getPlayer();
-    return "{}";
+    const Player *player = client->getPlayer();
+    QJsonObject j;
+
+    j.insert("me", player->getInformations(player->GetId()));
+    QJsonDocument doc(j);
+
+    return doc.toJson(QJsonDocument::Compact);
 }

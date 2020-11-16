@@ -8,6 +8,8 @@
 #include "Player.hh"
 #include "Map.hh"
 
+class Player;
+class Map;
 /**
  * @brief The Client class
  * Class used to manage Client socket connections from the Server.
@@ -23,16 +25,16 @@ public:
     Client(std::string client_id, QTcpSocket *socket);
 
     void setPlayer(Player* player);
-    Player* getPlayer();
+    Player* getPlayer() const;
     void setMap(Map* map);
-    Map* getMap();
+    Map* getMap() const;
 
     void setClientId(QString client_id);
-    QString getClientId();
+    QString getClientId() const;
 
     void disconnect();                      // Drops the socket connection
-    QTcpSocket* getSocket();
-    bool isConnected();
+    QTcpSocket* getSocket() const;
+    bool isConnected() const;
 
 private:
     QTcpSocket *socket = nullptr;

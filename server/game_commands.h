@@ -9,6 +9,7 @@
 #include <set>
 #include <algorithm>
 
+#include "Server.h"
 #include "Client.h"
 #include "Player.hh"
 #include "Map.hh"

@@ -24,9 +24,10 @@ Client::~Client()
 void Client::setPlayer(Player* player)
 {
     this->player = player;
+    player->SetClient(this);
 }
 
-Player* Client::getPlayer()
+Player* Client::getPlayer() const
 {
     return this->player;
 }
@@ -36,7 +37,7 @@ void Client::setMap(Map* map)
     this->map = map;
 }
 
-Map* Client::getMap()
+Map* Client::getMap() const
 {
     return this->map;
 }
@@ -51,17 +52,17 @@ void Client::setClientId(QString client_id)
     this->client_id = client_id;
 }
 
-QString Client::getClientId()
+QString Client::getClientId() const
 {
     return this->client_id;
 }
 
-QTcpSocket* Client::getSocket()
+QTcpSocket* Client::getSocket() const
 {
     return this->socket;
 }
 
-bool Client::isConnected()
+bool Client::isConnected() const
 {
     return (this->socket->state() == QTcpSocket::ConnectedState);
 }

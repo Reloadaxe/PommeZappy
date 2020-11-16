@@ -19,6 +19,11 @@ Server* Server::getInstance(std::string listen_host, int listen_port, int max_cl
     return instance;
 }
 
+Server* Server::getInstance(void)
+{
+    return instance;
+}
+
 void Server::start(void)
 {
     QHostAddress address;

@@ -2,7 +2,9 @@
 #define _MAP_HH
 
 #include <vector>
+#include <QJsonArray>
 #include "Cell.hh"
+#include "game_enums.hh"
 
 class Cell;
 class Map {
@@ -13,6 +15,8 @@ class Map {
         unsigned int GetHeight(void) const;
         Cell *GetCellAt(const unsigned int y, const unsigned int x) const;
         void Show(void) const;
+        QString GetPartContentAt(const unsigned int y, const unsigned int x) const;
+        QJsonArray GetPart(const Direction orientation, const unsigned int y, const unsigned int x) const;
         static Map *Get(void);
         static Map *Get(const unsigned int height, const unsigned int width);
 

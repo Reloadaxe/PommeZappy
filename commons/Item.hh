@@ -6,7 +6,7 @@ class Item {
         Item(const char c);
         virtual ~Item();
         virtual void DoAction(void) = 0;
-        char GetChar(void);
+        char GetRepr(void) const;
 
     private:
         char _char;
