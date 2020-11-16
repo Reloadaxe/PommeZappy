@@ -32,6 +32,11 @@ Cell *Map::GetCellAt(const unsigned int y, const unsigned int x) const
     return _cells.at(y).at(x);
 }
 
+std::vector<std::vector<Cell*>> Map::GetCells(void) const
+{
+    return _cells;
+}
+
 void Map::Show(void) const
 {
     for (std::vector<Cell*> cellsLine: _cells) {

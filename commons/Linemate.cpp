@@ -2,4 +2,4 @@
 
 Linemate::Linemate(void) : Item('L') {}
 
-void Limemate::DoAction(void) const {}
+void Linemate::DoAction(void) const {}

@@ -5,7 +5,7 @@ class Item {
     public:
         Item(const char c);
         virtual ~Item();
-        virtual void DoAction(void) = 0;
+        virtual void DoAction(void) const = 0;
         char GetRepr(void) const;
 
     private:

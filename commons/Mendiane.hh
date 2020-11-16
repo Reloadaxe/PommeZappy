@@ -7,6 +7,6 @@ class Mendiane : public Item {
     public:
         Mendiane(void);
         void DoAction(void) const override;
-}
+};
 
 #endif

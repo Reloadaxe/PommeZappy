@@ -8,6 +8,7 @@ class Client;
 class Cell {
     public:
         Cell(const unsigned int y, const unsigned int x);
+        void SetItem(Item *item);
         Item *GetItem(void) const;
         void RemoveItem(void);
         Client *GetClient(void) const;

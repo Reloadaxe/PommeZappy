@@ -14,6 +14,7 @@ class Map {
         unsigned int GetWidth(void) const;
         unsigned int GetHeight(void) const;
         Cell *GetCellAt(const unsigned int y, const unsigned int x) const;
+        std::vector<std::vector<Cell*>> GetCells(void) const;
         void Show(void) const;
         QString GetPartContentAt(const unsigned int y, const unsigned int x) const;
         QJsonArray GetPart(const Direction orientation, const unsigned int y, const unsigned int x) const;

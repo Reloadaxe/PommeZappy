@@ -7,6 +7,6 @@ class Sibur : public Item {
     public:
         Sibur(void);
         void DoAction(void) const override;
-}
+};
 
 #endif

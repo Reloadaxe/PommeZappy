@@ -15,6 +15,11 @@ SOURCES +=  \
     ./network/Server.cpp \
     ./network/server_utils.cpp \
     ../commons/Item.cpp \
+    ../commons/Deraumere.cpp \
+    ../commons/Linemate.cpp \
+    ../commons/Mendiane.cpp \
+    ../commons/Sibur.cpp \
+    ../commons/ItemFactory.cpp \
     Cell.cpp \
     Player.cpp \
     Map.cpp \
@@ -38,6 +43,10 @@ HEADERS += \
     ./network/Server.h \
     ./network/server_utils.h \
     ../commons/Item.hh \
+    ../commons/Deraumere.hh \
+    ../commons/Linemate.hh \
+    ../commons/Mendiane.hh \
+    ../commons/Sibur.hh \
     Cell.hh \
     game_enums.hh \
     Player.hh \

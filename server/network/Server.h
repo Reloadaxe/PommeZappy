@@ -3,10 +3,16 @@
 
 #include <map>
 #include <iostream>
+#include <vector>
+#include <stdlib.h>
+#include <time.h>
 #include <QTcpServer>
 #include <QTcpSocket>
 
+#include "Cell.hh"
 #include "Client.h"
+#include "Item.hh"
+#include "ItemFactory.hh"
 
 class Server : public QTcpServer {
     Q_OBJECT

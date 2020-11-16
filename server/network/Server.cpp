@@ -142,6 +142,18 @@ void Server::respondToCommand(Client* client, QString command)
     );
 }
 
+std::vector<Cell *> getAvailableCells(const Map *map)
+{
+    std::vector<Cell *> availableCells;
+
+    for (std::vector<Cell *> cellsLine : map->GetCells())
+        for (Cell *cell : cellsLine)
+            if (cell->GetClient() == nullptr && cell->GetItem() == nullptr)
+                availableCells.push_back(cell);
+
+    return availableCells;
+}
+
 /**
  * @brief performGameCycle
  * This function is called each cycle to reinitialize the energy
@@ -149,9 +161,16 @@ void Server::respondToCommand(Client* client, QString command)
  */
 void Server::performGameCycle(Map* map)
 {
+    srand(time(NULL));
     std::map<QTcpSocket*, Client>::iterator it;
     for (it = this->clients.begin(); it != this->clients.end(); it++)
         it->second.getPlayer()->ResetEnergy();
-    // TODO : Le serveur génère une nouvelle pierre sur la carte, de type aléatoire.
-    map->GetWidth(); // Avoiding -Wunused
+
+    const std::vector<Cell *> availableCells = getAvailableCells(map);
+    unsigned int cellIndex = rand() % availableCells.size();
+
+    const std::string availableItems[4] = {"Deraumere", "Linemate", "Mendiane", "Sibur"};
+    Item *item = ItemFactory::MakeItem(availableItems[rand() % 4]);
+
+    availableCells.at(cellIndex)->SetItem(item);
 }

@@ -2,6 +2,11 @@
 
 Cell::Cell(const unsigned int y, const unsigned int x) : _y(y), _x(x), _item(nullptr), _client(nullptr) {}
 
+void Cell::SetItem(Item *item)
+{
+    _item = item;
+}
+
 Item *Cell::GetItem(void) const
 {
     return _item;
