@@ -60,13 +60,13 @@ int main(int argc, char *argv[])
     Network *network = Network::Get();
     while (true) {
         network->Send("me");
-        const QJsonObject me = JsonFromString(network->Read()).value("me").toObject();
+        QJsonObject me = JsonFromString(network->Read()).value("me").toObject();
         if (me.value("energy").toInt() == 0)
             continue;
         network->Send("map");
-        const QJsonArray map = JsonFromString(network->Read()).value("map").toArray();
+        QJsonArray map = JsonFromString(network->Read()).value("map").toArray();
 
-        const std::vector<const QString> *commands = player->Think(&map);
+        std::vector<QString> *commands = player->Think(&map);
 
         for (QString command: *commands) {
             network->Send(command);
