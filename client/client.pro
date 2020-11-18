@@ -1,5 +1,5 @@
 TARGET = client
-QT -= core widgets
+QT += core widgets network
 
 CONFIG += c++14 console
 CONFIG -= app_bundle
@@ -12,6 +12,7 @@ QMAKE_CXXFLAGS += -Wall -Wextra -Wpedantic -Werror
 
 SOURCES +=  \
             Player.cpp \
+            Network.cpp \
             client.cpp
 
 # Default rules for deployment.
@@ -19,5 +20,6 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-HEADERS += \
-            Player.hh
+HEADERS +=  \
+            Player.hh \
+            Network.hh

@@ -5,6 +5,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include "Player.hh"
+#include "Network.hh"
 
 void ShowUsage(void)
 {
@@ -14,13 +15,13 @@ void ShowUsage(void)
 
 void connect(int argc, char *argv[])
 {
-    std::string host = "";
+    QString host = "";
     int16_t port = 0;
     for (int i = 1; i < argc; ++i) {
         if (std::string(argv[i]) == "--host") {
             if (i + 1 < argc) {
                 i++;
-                host = std::string(argv[i]);
+                host = argv[i];
             } else {
                 ShowUsage();
             }
@@ -40,10 +41,11 @@ void connect(int argc, char *argv[])
     if (host == "" || port == 0) {
         ShowUsage();
     }
-    // connect to server and get player Id
+    Network *network = Network::Get();
+    network->Connect(host, port);
 }
 
-const QJsonObject JsonFromString(const QString string)
+QJsonObject JsonFromString(const QString string)
 {
     QJsonDocument doc = QJsonDocument::fromJson(string.toUtf8());
     return doc.object();
@@ -53,23 +55,25 @@ int main(int argc, char *argv[])
 {
     connect(argc, argv);
 
-    // Player *player = Player::Get();
+    Player *player = Player::Get();
 
-    // Connection *connection = Connection::Get();
-    // while (true) {
-        // connection->Send("me");
-        // const QJsonObject me = JsonFromString(connection->Read()).take("me");
-        // if (me.take("energy") == 0)
-        //     continue;
-        // connection->Send("map");
-        // const QJsonArray *map = JsonFromString(connection->Read()).take("map");
+    Network *network = Network::Get();
+    while (true) {
+        network->Send("me");
+        const QJsonObject me = JsonFromString(network->Read()).value("me").toObject();
+        if (me.value("energy").toInt() == 0)
+            continue;
+        network->Send("map");
+        const QJsonArray map = JsonFromString(network->Read()).value("map").toArray();
 
-        //const std::vector<const QString> *commands = player->Think(map);
+        const std::vector<const QString> *commands = player->Think(&map);
 
-        // for (const QString command: &commands) {
-        //     connection->Send(command);
-        // }
-    // }
+        for (QString command: *commands) {
+            network->Send(command);
+        }
+        std::cout << network->Read().toStdString() << std::endl;
+        break;
+    }
 
     return 0;
 }
