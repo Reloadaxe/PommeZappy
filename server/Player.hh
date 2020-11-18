@@ -11,14 +11,14 @@ class Map;
 class Client;
 class Player {
     public:
-        Player(const unsigned int y, const unsigned int x);
+        Player(const int y, const int x);
         Direction GetOrientation() const;
         QString GetOrientationStr(const Direction orientation) const;
         void SetClient(Client *client);
         Client *GetClient(void) const;
-        unsigned int GetId(void) const;
-        unsigned int GetY(void) const;
-        unsigned int GetX(void) const;
+        int GetId(void) const;
+        int GetY(void) const;
+        int GetX(void) const;
         void AddLifePoint(void);
         void RemoveLifePoint(void);
         void AddVictoryPoint(void);
@@ -41,8 +41,8 @@ class Player {
         unsigned int _lifePoints;
         unsigned int _victoryPoints;
         Direction _orientation;
-        unsigned int _y;
-        unsigned int _x;
+        int _y;
+        int _x;
         Client *_client;
 };
 

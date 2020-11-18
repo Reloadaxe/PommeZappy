@@ -2,7 +2,7 @@
 
 std::vector<bool> *Player::_ids = nullptr;
 
-Player::Player(const unsigned int y, const unsigned int x) : _energy(2), _lifePoints(10), _victoryPoints(0), _orientation(North), _y(y), _x(x), _client(nullptr)
+Player::Player(const int y, const int x) : _energy(2), _lifePoints(10), _victoryPoints(0), _orientation(North), _y(y), _x(x), _client(nullptr)
 {
     const std::vector<bool>::iterator it = std::find(_ids->begin(), _ids->end(), false);
     if (it != _ids->end())
@@ -27,17 +27,17 @@ Client *Player::GetClient(void) const
     return _client;
 }
 
-unsigned int Player::GetId(void) const
+int Player::GetId(void) const
 {
     return _id;
 }
 
-unsigned int Player::GetY(void) const
+int Player::GetY(void) const
 {
     return _y;
 }
 
-unsigned int Player::GetX(void) const
+int Player::GetX(void) const
 {
     return _x;
 }
