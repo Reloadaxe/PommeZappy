@@ -44,6 +44,9 @@ unsigned int Player::GetX(void) const
 
 void Player::SetIds(const unsigned int size)
 {
+    if (_ids == nullptr) {
+        _ids = new std::vector<bool>(size);
+    }
     _ids->clear();
     std::fill(_ids->begin(), _ids->begin() + size, false);
 }
