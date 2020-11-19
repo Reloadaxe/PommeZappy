@@ -59,11 +59,12 @@ int main(int argc, char **argv)
     std::cout << "Starting server..." << std::endl;
     server->start();
     std::cout << "Waiting for " << nb_players << " players to join..." << std::endl;
-    while (static_cast<int>(server->getClients().size()) < nb_players);
+    while ((int)server->getClients().size() < nb_players)
+        server->waitForNewConnection();
     server->refuseAdditionalClients();
     std::cout << "Perfect, " << nb_players << " joined !" << std::endl;
     std::cout << "Initializating game players..." << std::endl;
-    associate_players_to_clients(players, server->getClients());
+    associate_players_to_clients(map, players, server->getClients());
     associate_map_to_clients(map, server->getClients());
     std::cout << "Starting the game..." << std::endl;
 

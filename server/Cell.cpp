@@ -35,13 +35,15 @@ void Cell::SetClient(Client *client)
 
 void Cell::Show(void) const
 {
-    (void)_y;
-    (void)_x;
-    if (_item == nullptr) {
-        // if (commandLine) write(empty cell char)
-        // else DoNothing;
+    (void)_y; // util with graphisms
+    (void)_x; // util with graphisms
+    if (_client != nullptr) {
+        std::cout << _client->getPlayer()->GetId();
         return;
     }
-    // if (commandLine) write(item->GetChar())
-    // else showItem();
+    if (_item != nullptr) {
+        std::cout << _item->GetRepr();
+        return;
+    }
+    std::cout << " ";
 }

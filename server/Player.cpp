@@ -8,12 +8,12 @@ Player::Player(const unsigned int y, const unsigned int x) : _energy(2), _lifePo
     if (it != _ids->end())
     {
         const int index = std::distance(_ids->begin(), it);
-        _id = _ids->at(index);
+        _id = index + 1;
         _ids->at(index) = true;
     }
     else
     {
-        _id = -1;
+        _id = 0;
     }
 }
 
@@ -45,10 +45,10 @@ unsigned int Player::GetX(void) const
 void Player::SetIds(const unsigned int size)
 {
     if (_ids == nullptr) {
-        _ids = new std::vector<bool>(size);
+        _ids = new std::vector<bool>;
+        for (int i = 0; i < (int)size; i++)
+            _ids->push_back(false);
     }
-    _ids->clear();
-    std::fill(_ids->begin(), _ids->begin() + size, false);
 }
 
 void Player::AddLifePoint(void)

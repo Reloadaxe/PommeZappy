@@ -167,7 +167,9 @@ void Server::performGameCycle(Map* map)
         it->second.getPlayer()->ResetEnergy();
 
     const std::vector<Cell *> availableCells = getAvailableCells(map);
-    unsigned int cellIndex = rand() % availableCells.size();
+    if ((int)availableCells.size() <= 0)
+        return;
+    unsigned int cellIndex = rand() % (int)availableCells.size();
 
     const std::string availableItems[4] = {"Deraumere", "Linemate", "Mendiane", "Sibur"};
     Item *item = ItemFactory::MakeItem(availableItems[rand() % 4]);

@@ -1,6 +1,14 @@
 #include "Map.hh"
 
-Map::Map(const unsigned int height, const unsigned int width) : _height(height), _width(width) {}
+Map::Map(const unsigned int height, const unsigned int width) : _height(height), _width(width) {
+    for (int y = 0; y < (int)height; y++) {
+        std::vector<Cell*> row;
+        for (int x = 0; x < (int)width; x++) {
+            row.push_back(new Cell(y, x));
+        }
+        _cells.push_back(row);
+    }
+}
 
 Map *Map::_map = nullptr;
 
@@ -43,9 +51,7 @@ void Map::Show(void) const
         for (Cell *cell : cellsLine) {
             cell->Show();
         }
-        // if (show in commandLine) {
-        //     write('\n');
-        // }
+        std::cout << std::endl;
     }
 }
 
