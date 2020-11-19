@@ -1,6 +1,8 @@
 #include <chrono>
 #include <string>
 #include <iostream>
+#include <QTcpServer>
+#include <QTcpSocket>
 
 #include "main.h"
 #include "Server.h"
@@ -56,11 +58,13 @@ int main(int argc, char **argv)
 
     // Initializing server
     Server *server = Server::getInstance(host, port, nb_players);
-    std::cout << "Starting server..." << std::endl;
-    server->start();
-    std::cout << "Waiting for " << nb_players << " players to join..." << std::endl;
-    while ((int)server->getClients().size() < nb_players)
-        server->waitForNewConnection();
+    QThread *server_thread = new QThread;
+    server->moveToThread(server_thread);
+    QObject::connect(server_thread, SIGNAL(started()), server, SLOT(start()));
+    server_thread->start();
+
+    std::cout << "Will wait for " << nb_players << " players to join." << std::endl;
+    while ((int)server->getClients().size() < nb_players);
     server->refuseAdditionalClients();
     std::cout << "Perfect, " << nb_players << " joined !" << std::endl;
     std::cout << "Initializating game players..." << std::endl;

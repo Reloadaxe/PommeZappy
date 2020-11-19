@@ -12,6 +12,13 @@ Server::Server(std::string listen_host, int listen_port, int max_clients, QObjec
     this->max_clients = max_clients;
 }
 
+Server* Server::getInstance(std::string listen_host, int listen_port, int max_clients, QObject *parent)
+{
+    if (instance == 0)
+        instance = new Server(listen_host, listen_port, max_clients, parent);
+    return instance;
+}
+
 Server* Server::getInstance(std::string listen_host, int listen_port, int max_clients)
 {
     if (instance == 0)
@@ -29,6 +36,7 @@ void Server::start(void)
     QHostAddress address;
     address.setAddress(this->listen_host);
     listen(address, (qint16)this->listen_port);
+    std::cout << "Starting server..." << std::endl;
 }
 
 void Server::stop(void)
@@ -49,16 +57,16 @@ void Server::incomingConnection(qintptr socketDescriptor)
     if (static_cast<int>(this->clients.size()) >= max_clients
             || this->refuse_additional_clients) {
         socket_client->disconnect();
-        qDebug() << "Refused connection due to nb clients exceeded or game started "\
-                 << socket_client->peerAddress().toString();
+        std::cout << "Refused connection due to nb clients exceeded or game started "\
+                 << socket_client->peerAddress().toString().toStdString() << std::endl;
         return;
     }
 
     QString peer_name = QString::fromUtf8(get_uuid().c_str());
     Client client = Client(peer_name, socket_client);
-    qDebug() << "Client connected with address "\
-             << socket_client->peerAddress().toString()\
-             << " : ID " << peer_name << " was attributed";
+    std::cout << "Client connected with address "\
+             << socket_client->peerAddress().toString().toStdString()\
+             << " : ID " << peer_name.toStdString() << " was attributed" << std::endl;
     this->clients.insert(std::pair<QTcpSocket*, Client>(socket_client, client));
 
     connect(socket_client, SIGNAL(readyRead()), this, SLOT(readyRead()));
@@ -96,9 +104,9 @@ void Server::readyRead()
             else
                 command += line[c];
         this->respondToCommand(&client, command);
-        qDebug() << "Received command : " << command;
+        std::cout << "Received command : " << command.toStdString();
     } else {
-        qDebug() << "ERROR: Can't find client associated with socket : " << socket_client->peerAddress().toString();
+        std::cout << "ERROR: Can't find client associated with socket : " << socket_client->peerAddress().toString().toStdString() << std::endl;
         return;
     }
 }
@@ -110,10 +118,10 @@ void Server::disconnected()
 
     if (client.getClientId() == NULL)
     {
-        qDebug() << "ERROR: Can't find client : " << socket_client->peerAddress().toString();
+        std::cout << "ERROR: Can't find client : " << socket_client->peerAddress().toString().toStdString();
         return;
     }
-    qDebug() << "Client disconnected : " << socket_client->peerAddress().toString();
+    std::cout << "Client disconnected : " << socket_client->peerAddress().toString().toStdString() << std::endl;
     clients.erase(socket_client);
 }
 
@@ -130,9 +138,10 @@ bool Server::areAllClientsDisconnected()
 {
     bool all_clients_disconnected = true;
     std::map<QTcpSocket*, Client>::iterator it;
-    for ( it = this->clients.begin(); it != this->clients.end(); it++ )
+    for ( it = this->clients.begin(); it != this->clients.end(); it++ ) {
         if (it->second.isConnected())
             return false;
+    }
     return all_clients_disconnected;
 }
 
