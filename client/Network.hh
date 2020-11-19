@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QTcpSocket>
+#include <QDataStream>
 #include <iostream>
 
 class Network : public QObject {
@@ -18,7 +19,7 @@ private slots:
 
 private:
     Network();
-    QTcpSocket *_socket;
+    QTcpSocket _socket;
     static Network *_network;
 };
 

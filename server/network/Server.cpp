@@ -71,6 +71,7 @@ void Server::incomingConnection(qintptr socketDescriptor)
  */
 void Server::readyRead()
 {
+    std::cout << "reading" << std::endl;
     QTcpSocket *socket_client = (QTcpSocket*)sender();
     Client client = clients.find(socket_client)->second;
 

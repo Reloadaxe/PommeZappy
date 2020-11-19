@@ -1,6 +1,6 @@
 #include "Map.hh"
 
-Map::Map(const unsigned int height, const unsigned int width) : _height(height), _width(width) {
+Map::Map(const int height, const int width) : _height(height), _width(width) {
     for (int y = 0; y < (int)height; y++) {
         std::vector<Cell*> row;
         for (int x = 0; x < (int)width; x++) {
