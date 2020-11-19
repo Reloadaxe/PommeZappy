@@ -17,7 +17,7 @@ Map *Map::Get(void)
     return _map == nullptr ? nullptr : _map;
 }
 
-Map *Map::Get(const unsigned int height, const unsigned int width)
+Map *Map::Get(const int height, const int width)
 {
     if (_map == nullptr) {
         _map = new Map(height, width);
@@ -25,17 +25,17 @@ Map *Map::Get(const unsigned int height, const unsigned int width)
     return _map;
 }
 
-unsigned int Map::GetWidth(void) const
+int Map::GetWidth(void) const
 {
     return _width;
 }
 
-unsigned int Map::GetHeight(void) const
+int Map::GetHeight(void) const
 {
     return _height;
 }
 
-Cell *Map::GetCellAt(const unsigned int y, const unsigned int x) const
+Cell *Map::GetCellAt(const int y, const int x) const
 {
     return _cells.at(y).at(x);
 }
@@ -55,7 +55,7 @@ void Map::Show(void) const
     }
 }
 
-QString Map::GetPartContentAt(const unsigned int y, const unsigned int x) const
+QString Map::GetPartContentAt(const int y, const int x) const
 {
     if (y < 0 || y >= _height || x < 0 || x >= _width) {
         return "";
@@ -72,7 +72,7 @@ QString Map::GetPartContentAt(const unsigned int y, const unsigned int x) const
     return " ";
 }
 
-QJsonArray Map::GetPart(const Direction orientation, const unsigned int y, const unsigned int x) const
+QJsonArray Map::GetPart(const Direction orientation, const int y, const int x) const
 {
     QJsonArray part;
 
