@@ -11,6 +11,7 @@
 #include "Client.h"
 #include "Player.hh"
 #include "Map.hh"
+#include "Cell.hh"
 
 std::vector<Player*> get_init_players(Map* map, int nb_players);
 

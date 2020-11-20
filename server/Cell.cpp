@@ -33,6 +33,16 @@ void Cell::SetClient(Client *client)
     _client = client;
 }
 
+unsigned int Cell::GetY(void) const
+{
+    return _y;
+}
+
+unsigned int Cell::GetX(void) const
+{
+    return _x;
+}
+
 void Cell::Show(void) const
 {
     (void)_y; // util with graphisms
