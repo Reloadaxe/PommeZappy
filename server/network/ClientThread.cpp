@@ -1,8 +1,9 @@
 #include "ClientThread.h"
+#include "server_utils.h"
 #include "game_commands.h"
 
-ClientThread::ClientThread(int socketDescriptor, Client* client, QObject *parent)
-: QThread(parent), socketDescriptor(socketDescriptor), client(client)
+ClientThread::ClientThread(int socketDescriptor, QObject *parent)
+: QThread(parent), socketDescriptor(socketDescriptor)
 {
 
 }
@@ -18,6 +19,13 @@ void ClientThread::run()
         emit error(client_socket.error());
         return;
     }
+
+    client_socket.waitForConnected();
+
+    Server* server = Server::getInstance();
+    QString peer_name = QString::fromUtf8(get_uuid().c_str());
+    client = new Client(peer_name);
+    server->clients.push_back(client);
 
     this->socket = &client_socket;
     client->setSocket(&client_socket);

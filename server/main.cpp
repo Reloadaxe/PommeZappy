@@ -65,12 +65,12 @@ int main(int argc, char **argv)
     server_thread->start();
 
     std::cout << "Will wait for " << nb_players << " players to join." << std::endl;
-    while (server->getClients().size() < (size_t)nb_players);
+    while (server->clients.size() < (size_t)nb_players);
     server->refuseAdditionalClients();
     std::cout << "Perfect, " << nb_players << " joined !" << std::endl;
     std::cout << "Initializating game players..." << std::endl;
-    associate_players_to_clients(map, players, server->getClients());
-    associate_map_to_clients(map, server->getClients());
+    associate_players_to_clients(map, players, server->clients);
+    associate_map_to_clients(map, server->clients);
     std::cout << "Starting the game..." << std::endl;
 
     // Periodically checking if :

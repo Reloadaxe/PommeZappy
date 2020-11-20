@@ -64,5 +64,8 @@ QTcpSocket* Client::getSocket() const
 
 bool Client::isConnected() const
 {
-    return (this->socket->state() == QTcpSocket::ConnectedState);
+    if (this->socket->isValid())
+        return (this->socket->state() == QTcpSocket::ConnectedState);
+    else
+        return 0;
 }

@@ -12,7 +12,7 @@ class ClientThread : public QThread
     Q_OBJECT
 
 public:
-    ClientThread(int socketDescriptor, Client* client, QObject *parent);
+    ClientThread(int socketDescriptor, QObject *parent);
 
     void run() override;
     void respondToCommand(Client* client, QString command);
@@ -22,6 +22,7 @@ public slots:
 
 signals:
     void error(QTcpSocket::SocketError socketError);
+    void canBePushed();
 
 private:
     int socketDescriptor;

@@ -27,6 +27,7 @@ public:
     void performGameCycle(Map* map);
 
     std::vector<Client*> getClients();
+    std::vector<Client*> clients;
 
 public slots:
     void start(void);
@@ -39,7 +40,6 @@ private:
     static Server* instance;
     Server(std::string listen_host, int listen_port, int max_clients, QObject *parent = nullptr);
 
-    std::vector<Client*> clients;
     QString listen_host;
     int listen_port;
     int max_clients;

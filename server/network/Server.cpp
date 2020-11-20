@@ -63,11 +63,7 @@ void Server::incomingConnection(qintptr socketDescriptor)
         return;
     }
 
-    QString peer_name = QString::fromUtf8(get_uuid().c_str());
-    Client* client = new Client(peer_name);
-    this->clients.push_back(client);
-
-    ClientThread* thread = new ClientThread(socketDescriptor, client, this);
+    ClientThread* thread = new ClientThread(socketDescriptor, this);
     connect(thread, &ClientThread::finished, thread, &ClientThread::deleteLater);
     thread->start();
 }
@@ -81,6 +77,7 @@ bool Server::areAllClientsDisconnected()
 {
     bool all_clients_disconnected = true;
     for (size_t i = 0; i < clients.size(); i++) {
+        //std::cout << "Client " << i << " is " << clients[i]->isConnected() << std::endl;
         if (clients[i]->isConnected())
             return false;
     }
