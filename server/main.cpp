@@ -1,6 +1,8 @@
 #include <chrono>
 #include <string>
 #include <iostream>
+#include <QTcpServer>
+#include <QTcpSocket>
 
 #include "main.h"
 #include "Server.h"
@@ -56,11 +58,14 @@ int main(int argc, char **argv)
 
     // Initializing server
     Server *server = Server::getInstance(host, port, nb_players);
-    std::cout << "Starting server..." << std::endl;
-    server->start();
-    std::cout << "Waiting for " << nb_players << " players to join..." << std::endl;
-    while ((int)server->getClients().size() < nb_players)
-        server->waitForNewConnection();
+    QThread *server_thread = new QThread;
+    server->moveToThread(server_thread);
+    QObject::connect(server_thread, SIGNAL(started()), server, SLOT(start()));
+    QObject::connect(server_thread, SIGNAL(finished()), server, SLOT(stop()));
+    server_thread->start();
+
+    std::cout << "Will wait for " << nb_players << " players to join." << std::endl;
+    while ((int)server->getClients().size() < nb_players);
     server->refuseAdditionalClients();
     std::cout << "Perfect, " << nb_players << " joined !" << std::endl;
     std::cout << "Initializating game players..." << std::endl;
@@ -72,7 +77,9 @@ int main(int argc, char **argv)
     // - all players are disconnected (DONE)
     // - all players are dead (TODO)
     // - one player is left alive (TODO)
-    while (server->areAllClientsDisconnected() == false)
+    while (
+           server->areAllClientsDisconnected() == false
+           )
     {
         uint64_t current_time = timeSinceEpochMillisec();
         if (current_time - last_cycle_time >= (ulong)cycle_interval)
@@ -88,5 +95,5 @@ int main(int argc, char **argv)
 
     // TODO : Game ended, displaying leaderboard
     std::cout << "Thank you for playing, game ended!" << std::endl;
-    server->stop();
+    server_thread->quit();
 }
