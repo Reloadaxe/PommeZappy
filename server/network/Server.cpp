@@ -41,6 +41,7 @@ void Server::start(void)
 
 void Server::stop(void)
 {
+    std::cout << "Server stopped." << std::endl;
     close();
 }
 
@@ -56,7 +57,8 @@ void Server::incomingConnection(qintptr socketDescriptor)
 
     if (static_cast<int>(this->clients.size()) >= max_clients
             || this->refuse_additional_clients) {
-        socket_client->disconnect();
+        socket_client->write("Refused connection due to nb clients exceeded or game started ");
+        socket_client->disconnectFromHost();
         std::cout << "Refused connection due to nb clients exceeded or game started "\
                  << socket_client->peerAddress().toString().toStdString() << std::endl;
         return;

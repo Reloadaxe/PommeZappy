@@ -61,6 +61,7 @@ int main(int argc, char **argv)
     QThread *server_thread = new QThread;
     server->moveToThread(server_thread);
     QObject::connect(server_thread, SIGNAL(started()), server, SLOT(start()));
+    QObject::connect(server_thread, SIGNAL(finished()), server, SLOT(stop()));
     server_thread->start();
 
     std::cout << "Will wait for " << nb_players << " players to join." << std::endl;
@@ -76,7 +77,9 @@ int main(int argc, char **argv)
     // - all players are disconnected (DONE)
     // - all players are dead (TODO)
     // - one player is left alive (TODO)
-    while (server->areAllClientsDisconnected() == false)
+    while (
+           server->areAllClientsDisconnected() == false
+           )
     {
         uint64_t current_time = timeSinceEpochMillisec();
         if (current_time - last_cycle_time >= (ulong)cycle_interval)
@@ -92,5 +95,5 @@ int main(int argc, char **argv)
 
     // TODO : Game ended, displaying leaderboard
     std::cout << "Thank you for playing, game ended!" << std::endl;
-    server->stop();
+    server_thread->quit();
 }
