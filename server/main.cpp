@@ -94,7 +94,7 @@ int main(int argc, char **argv)
         for (Client *client : server->getClients()) {
             Player *player = client->getPlayer();
             if (!player->GetIsDead()) {
-                playerAlived++;
+                playersAlived++;
                 if (playerAlived != nullptr)
                     break;
                 playerAlived = player;
