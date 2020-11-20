@@ -2,11 +2,11 @@
 
 std::vector<Player*> get_init_players(Map* map, int nb_players)
 {
-    map->GetWidth(); // To remove once following TODO is done (avoiding -Wunused)
     std::vector<Player*> players;
     for (int i = 0; i < nb_players; i++)
     {
-        players.push_back(new Player(0, 0)); // TODO : Spawn players in appropriate map locations
+        Cell *cell = map->GetRandomAvailableCell();
+        players.push_back(new Player(cell->GetY(), cell->GetX())); // TODO : Spawn players in appropriate map locations
     }
     return players;
 }

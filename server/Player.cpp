@@ -2,7 +2,7 @@
 
 std::vector<bool> *Player::_ids = nullptr;
 
-Player::Player(const int y, const int x) : _energy(2), _lifePoints(10), _victoryPoints(0), _orientation(North), _y(y), _x(x), _client(nullptr)
+Player::Player(const int y, const int x) : _is_dead(false), _energy(2), _lifePoints(10), _victoryPoints(0), _orientation(North), _y(y), _x(x), _client(nullptr)
 {
     const std::vector<bool>::iterator it = std::find(_ids->begin(), _ids->end(), false);
     if (it != _ids->end())
@@ -25,6 +25,21 @@ void Player::SetClient(Client *client)
 Client *Player::GetClient(void) const
 {
     return _client;
+}
+
+int Player::GetLifePoints(void) const
+{
+    return _lifePoints;
+}
+
+bool Player::GetIsDead(void)
+{
+    if (!_is_dead && _lifePoints < 0) {
+        Map *map = Map::Get();
+        map->GetCellAt(_y, _x)->RemoveClient();
+        _is_dead = true;
+    }
+    return _is_dead;
 }
 
 int Player::GetId(void) const

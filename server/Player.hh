@@ -19,6 +19,8 @@ class Player {
         int GetId(void) const;
         int GetY(void) const;
         int GetX(void) const;
+        int GetLifePoints(void) const;
+        bool GetIsDead(void);
         void AddLifePoint(void);
         void RemoveLifePoint(void);
         void AddVictoryPoint(void);
@@ -36,9 +38,10 @@ class Player {
 
     private:
         static std::vector<bool> *_ids;
+        bool _is_dead;
         unsigned int _id;
         unsigned int _energy;
-        unsigned int _lifePoints;
+        int _lifePoints;
         unsigned int _victoryPoints;
         Direction _orientation;
         int _y;
