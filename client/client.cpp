@@ -71,8 +71,6 @@ int main(int argc, char *argv[])
         for (QString command: *commands) {
             network->Send(command);
         }
-        std::cout << network->Read().toStdString() << std::endl;
-        break;
     }
 
     return 0;
