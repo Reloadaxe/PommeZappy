@@ -175,8 +175,12 @@ void Server::performGameCycle(Map* map)
 {
     srand(time(NULL));
     std::map<QTcpSocket*, Client>::iterator it;
-    for (it = this->clients.begin(); it != this->clients.end(); it++)
-        it->second.getPlayer()->ResetEnergy();
+    for (it = this->clients.begin(); it != this->clients.end(); it++) {
+        Player *player = it->second.getPlayer();
+        if (!player->GetIsDead()) {
+            it->second.getPlayer()->ResetEnergy();
+        }
+    }
 
     const std::vector<Cell *> availableCells = getAvailableCells(map);
     if ((int)availableCells.size() <= 0)
