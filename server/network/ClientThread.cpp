@@ -25,10 +25,10 @@ void ClientThread::run()
     Server* server = Server::getInstance();
     QString peer_name = QString::fromUtf8(get_uuid().c_str());
     client = new Client(peer_name);
-    server->clients.push_back(client);
 
     this->socket = &client_socket;
     client->setSocket(&client_socket);
+    server->clients.push_back(client);
     std::cout << "Client connected with address "\
              << client_socket.peerAddress().toString().toStdString()\
              << " : ID " << client->getClientId().toStdString() << " was attributed" << std::endl;
