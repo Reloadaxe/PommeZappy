@@ -28,7 +28,7 @@ std::set<std::string> MOVE_COMMAND_NAMES {
 cmd_func_ptr get_rgtr_command_fnc(std::string command)
 {
     std::map<std::string, cmd_func_ptr>::const_iterator pos = REGISTER_COMMANDS.find(command);
-    if (pos == REGISTER_COMMANDS.end())
+    if (pos != REGISTER_COMMANDS.end())
         return pos->second;
     return nullptr;
 }
@@ -140,7 +140,7 @@ QString cmd_perform_inspect(Client* client)
     QJsonArray playersInformations;
     for (Client *client : clients) {
         const Player *player = client->getPlayer();
-        playersInformations.append(player->getInformations(player->GetId(), false));
+        playersInformations.append(player->getInformations(false));
     }
 
     j.insert("inspect", playersInformations);
@@ -168,7 +168,7 @@ QString cmd_perform_me(Client* client)
     const Player *player = client->getPlayer();
     QJsonObject j;
 
-    j.insert("me", player->getInformations(player->GetId()));
+    j.insert("me", player->getInformations(true));
     QJsonDocument doc(j);
 
     return doc.toJson(QJsonDocument::Compact);

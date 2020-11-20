@@ -250,11 +250,11 @@ QString Player::GetOrientationStr(const Direction orientation) const
     return "";
 }
 
-QJsonObject Player::getInformations(const int id, const bool all) const
+QJsonObject Player::getInformations(const bool all) const
 {
     QJsonObject informations;
 
-    informations.insert("id", id);
+    informations.insert("id", (int)_id);
     informations.insert("life", (int)_lifePoints);
     informations.insert("victory", (int)_victoryPoints);
     if (all) {

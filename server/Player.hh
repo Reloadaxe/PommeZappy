@@ -33,7 +33,7 @@ class Player {
         void Attack(const Map *map) const;
         void Move(const Map *map);
         bool DoCommand(const Command command, const Map *map);
-        QJsonObject getInformations(const int id, const bool all=true) const;
+        QJsonObject getInformations(const bool all) const;
         static void SetIds(const unsigned int size);
 
     private:
