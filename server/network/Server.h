@@ -35,19 +35,18 @@ public slots:
 protected:
     void incomingConnection(qintptr socketDescriptor) Q_DECL_OVERRIDE;
 
-private slots:
-    void readyRead();
-    void disconnected();
-
 private:
     static Server* instance;
     Server(std::string listen_host, int listen_port, int max_clients, QObject *parent = nullptr);
 
-    std::map<QTcpSocket*, Client> clients;
+    std::vector<Client*> clients;
     QString listen_host;
     int listen_port;
     int max_clients;
     bool refuse_additional_clients = false;
+
+signals:
+    void error(QTcpSocket::SocketError socketError);
 };
 
 #endif

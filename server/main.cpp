@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     server_thread->start();
 
     std::cout << "Will wait for " << nb_players << " players to join." << std::endl;
-    while ((int)server->getClients().size() < nb_players);
+    while (server->getClients().size() < (size_t)nb_players);
     server->refuseAdditionalClients();
     std::cout << "Perfect, " << nb_players << " joined !" << std::endl;
     std::cout << "Initializating game players..." << std::endl;
@@ -78,8 +78,8 @@ int main(int argc, char **argv)
     // - all players are dead (TODO)
     // - one player is left alive (TODO)
     while (
-           server->areAllClientsDisconnected() == false
-           )
+        server->areAllClientsDisconnected() == false
+    )
     {
         uint64_t current_time = timeSinceEpochMillisec();
         if (current_time - last_cycle_time >= (ulong)cycle_interval)

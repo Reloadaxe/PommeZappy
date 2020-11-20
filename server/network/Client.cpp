@@ -4,6 +4,11 @@ Client::Client()
 {
 }
 
+Client::Client(QString client_id)
+{
+    this->client_id = client_id;
+}
+
 Client::Client(QString client_id, QTcpSocket *socket)
 {
     this->client_id = client_id;
@@ -14,11 +19,6 @@ Client::Client(std::string client_id, QTcpSocket *socket)
 {
     this->client_id = QString::fromUtf8(client_id.c_str());
     this->socket = socket;
-}
-
-Client::~Client()
-{
-    this->disconnect();
 }
 
 void Client::setPlayer(Player* player)
@@ -42,11 +42,6 @@ Map* Client::getMap() const
     return this->map;
 }
 
-void Client::disconnect()
-{
-    this->socket->disconnect();
-}
-
 void Client::setClientId(QString client_id)
 {
     this->client_id = client_id;
@@ -55,6 +50,11 @@ void Client::setClientId(QString client_id)
 QString Client::getClientId() const
 {
     return this->client_id;
+}
+
+void Client::setSocket(QTcpSocket* socket)
+{
+    this->socket = socket;
 }
 
 QTcpSocket* Client::getSocket() const

@@ -20,7 +20,7 @@ class Client
 
 public:
     Client();
-    ~Client();
+    Client(QString client_id);
     Client(QString client_id, QTcpSocket *socket);
     Client(std::string client_id, QTcpSocket *socket);
 
@@ -32,7 +32,7 @@ public:
     void setClientId(QString client_id);
     QString getClientId() const;
 
-    void disconnect();                      // Drops the socket connection
+    void setSocket(QTcpSocket* socket);
     QTcpSocket* getSocket() const;
     bool isConnected() const;
 
