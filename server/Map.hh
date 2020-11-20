@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <QJsonArray>
+#include "Client.h"
 #include "Cell.hh"
 #include "game_enums.hh"
 
@@ -16,6 +17,7 @@ class Map {
         Cell *GetCellAt(const int y, const int x) const;
         std::vector<std::vector<Cell*>> GetCells(void) const;
         void Show(void) const;
+        Cell *GetRandomAvailableCell(void) const;
         QString GetPartContentAt(const int y, const int x) const;
         QJsonArray GetPart(const Direction orientation, const int y, const int x) const;
         static Map *Get(void);

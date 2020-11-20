@@ -14,6 +14,8 @@ class Cell {
         Client *GetClient(void) const;
         void RemoveClient(void);
         void SetClient(Client *client);
+        unsigned int GetY(void) const;
+        unsigned int GetX(void) const;
         void Show(void) const;
 
     private:

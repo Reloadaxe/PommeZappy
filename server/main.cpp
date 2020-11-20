@@ -73,13 +73,7 @@ int main(int argc, char **argv)
     associate_map_to_clients(map, server->clients);
     std::cout << "Starting the game..." << std::endl;
 
-    // Periodically checking if :
-    // - all players are disconnected (DONE)
-    // - all players are dead (TODO)
-    // - one player is left alive (TODO)
-    while (
-        server->areAllClientsDisconnected() == false
-    )
+    while (true)
     {
         uint64_t current_time = timeSinceEpochMillisec();
         if (current_time - last_cycle_time >= (ulong)cycle_interval)
@@ -90,6 +84,29 @@ int main(int argc, char **argv)
             current_game_cycle += 1;
             last_cycle_time = current_time;
             std::cout << "Currently running game cycle " << current_game_cycle << "..." << std::endl;
+        }
+        if (server->areAllClientsDisconnected()) {
+            std::cout << "All clients are disconnected" << std::endl;
+            break;
+        }
+        Player *playerAlived = nullptr;
+        int playersAlived = 0;
+        for (Client *client : server->getClients()) {
+            Player *player = client->getPlayer();
+            if (!player->GetIsDead()) {
+                playerAlived++;
+                if (playerAlived != nullptr)
+                    break;
+                playerAlived = player;
+            }
+        }
+        if (playersAlived == 0) {
+            std::cout << "No more player alive" << std::endl;
+            break;
+        }
+        if (playersAlived == 1) {
+            std::cout << "Player " << std::to_string(playerAlived->GetId()) << " is the last player alive, he won the game !" << std::endl;
+            break;
         }
     }
 
