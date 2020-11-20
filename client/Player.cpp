@@ -29,22 +29,24 @@ std::vector<QString> *Player::Think(QJsonArray *map)
 
     std::vector<QString> *commands = new std::vector<QString>();
 
-    if (maxWeight == 0)
+    if (maxWeight == 0) { 
         commands->push_back("jump");
+        return commands;
+    }
     
     switch (cell) {
         case 0:
             commands->push_back("leftfwd");
             break;
         case 1:
-            commands->push_back("front");
+            commands->push_back("fwd");
             break;
         case 2:
             commands->push_back("rightfwd");
             break;
         case 3:
-            commands->push_back("front");
-            commands->push_back("front");
+            commands->push_back("fwd");
+            commands->push_back("fwd");
             break;
     }
     

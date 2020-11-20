@@ -25,17 +25,25 @@ void Network::Send(const QString message)
 {
     if(!message.isEmpty()) {
         _socket.write(QString (message + "\n").toUtf8());
+        _socket.waitForBytesWritten();
+        std::cout << "Sent " << message.toStdString().c_str() << std::endl;
     }
 }
 
 QString Network::Read(void)
 {
-    QString message;
-    QDataStream in(&_socket);
-    _socket.waitForReadyRead(-1);
-    in.startTransaction();
-    in >> message;
-    std::cout << message.toStdString().c_str() << std::endl;
+    QByteArray array;
+
+    while(!array.contains('\n')) {
+        _socket.waitForReadyRead();
+        array += _socket.readAll();
+    }
+
+    int bytes = array.indexOf('\n') + 1;
+    QByteArray message = array.left(bytes);
+    array = array.mid(bytes);
+
+    std::cout << "received : " << message.toStdString() << std::endl;
     return message;
 }
 
