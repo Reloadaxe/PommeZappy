@@ -17,7 +17,7 @@ public:
     void run() override;
     void respondToCommand(Client* client, QString command);
 
-private slots:
+public slots:
     void disconnected();
 
 signals:

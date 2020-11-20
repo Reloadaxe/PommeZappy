@@ -68,7 +68,7 @@ void Server::incomingConnection(qintptr socketDescriptor)
     this->clients.push_back(client);
 
     ClientThread* thread = new ClientThread(socketDescriptor, client, this);
-    //connect(thread, &ClientThread::finished, thread, &ClientThread::deleteLater);
+    connect(thread, &ClientThread::finished, thread, &ClientThread::deleteLater);
     thread->start();
 }
 

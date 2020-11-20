@@ -19,15 +19,16 @@ void ClientThread::run()
         return;
     }
 
-    client_socket.waitForReadyRead();
     this->socket = &client_socket;
     client->setSocket(&client_socket);
     std::cout << "Client connected with address "\
              << client_socket.peerAddress().toString().toStdString()\
              << " : ID " << client->getClientId().toStdString() << " was attributed" << std::endl;
     connect(&client_socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
+
     while(true)
     {
+        client_socket.waitForReadyRead();
         // Reading only first line
         QString line;
         QString command = "";
@@ -48,15 +49,15 @@ void ClientThread::run()
             else
                 command += line[c];
         if (command.size() > 0) {
+            std::cout << "Received command : " << command.toStdString() << std::endl;
             this->respondToCommand(client, command);
-            std::cout << "Received command : " << command.toStdString();
         }
     }
 }
 
 void ClientThread::disconnected()
 {
-    std::cout << "Client disconnected : " << socket->peerAddress().toString().toStdString() << std::endl;
+    std::cout << "Client disconnected : " << client->getClientId().toStdString() << std::endl;
 }
 
 void ClientThread::respondToCommand(Client* client, QString command)
