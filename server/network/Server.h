@@ -21,7 +21,6 @@ public:
     static Server* getInstance(std::string listen_host, int listen_port, int max_clients);
     static Server* getInstance(std::string listen_host, int listen_port, int max_clients, QObject *parent);
     static Server* getInstance(void);
-    void stop(void);
     void refuseAdditionalClients(); // When game starts
     void respondToCommand(Client* client, QString command);
     bool areAllClientsDisconnected();
@@ -31,6 +30,7 @@ public:
 
 public slots:
     void start(void);
+    void stop(void);
 
 protected:
     void incomingConnection(qintptr socketDescriptor) Q_DECL_OVERRIDE;
