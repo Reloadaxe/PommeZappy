@@ -11,7 +11,7 @@ Player *Player::Get(void)
     return _player;
 }
 
-std::vector<QString> *Player::Think(QJsonArray *map)
+std::vector<QString> *Player::Think(QJsonArray *map, const bool jumped)
 {
     QString items = "D 1LMS";
     unsigned int maxWeight = 0;
@@ -30,7 +30,7 @@ std::vector<QString> *Player::Think(QJsonArray *map)
     std::vector<QString> *commands = new std::vector<QString>();
 
     if (maxWeight == 0) { 
-        commands->push_back("jump");
+        commands->push_back(jumped ? "right" : "jump");
         return commands;
     }
     

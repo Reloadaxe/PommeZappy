@@ -128,6 +128,8 @@ void Server::performGameCycle(Map* map)
         Player *player = clients[i]->getPlayer();
         if (!player->GetIsDead()) {
             player->ResetEnergy();
+        } else {
+            std::cerr << "player is dead" << std::endl;
         }
     }
 

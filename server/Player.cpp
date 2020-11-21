@@ -106,13 +106,13 @@ bool Player::CanMove(const Map *map) const
     switch (_orientation)
     {
     case Direction::zp_North:
-        return _y - 1 > 0;
+        return _y - 1 >= 0;
     case Direction::zp_East:
-        return _x + 1 < map->GetWidth() - 1;
+        return _x + 1 < map->GetWidth();
     case Direction::zp_South:
-        return _y + 1 < map->GetHeight() - 1;
+        return _y + 1 < map->GetHeight();
     case Direction::zp_West:
-        return _x - 1 > 0;
+        return _x - 1 >= 0;
     }
     return false;
 }

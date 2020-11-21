@@ -58,20 +58,25 @@ int main(int argc, char *argv[])
     Player *player = Player::Get();
 
     Network *network = Network::Get();
+    bool jumped = false;
     network->Read();
     while (true) {
         network->Send("me");
         QJsonObject me = JsonFromString(network->Read()).value("me").toObject();
-        if (me.value("energy").toInt() == 0)
+        if (me.value("energy").toInt() <= 0)
             continue;
         network->Send("map");
         QJsonArray map = JsonFromString(network->Read()).value("map").toArray();
 
-        std::vector<QString> *commands = player->Think(&map);
+        std::vector<QString> *commands = player->Think(&map, jumped);
+        jumped = false;
 
         for (QString command: *commands) {
+            if (command == "jump")
+                jumped = true;
             network->Send(command);
         }
+        network->Read();
     }
 
     return 0;
