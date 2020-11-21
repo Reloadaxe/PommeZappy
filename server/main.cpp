@@ -36,7 +36,7 @@ int main(int argc, char **argv)
     int map_height = convert_assert_str_int(options.find("map_height")->second, "map_height", 2);
     int map_width = convert_assert_str_int(options.find("map_width")->second, "map_width", 2);
     int port = convert_assert_str_int(options.find("port")->second, "port", 1024, 100000);
-    int nb_players = convert_assert_str_int(options.find("nb_players")->second, "nb_players", 1, 1000);
+    int nb_players = convert_assert_str_int(options.find("nb_players")->second, "nb_players", 2, 1000);
     int cycle_interval = convert_assert_str_int(options.find("cycle_interval")->second, "cycle", 1, 60000);
     std::string host = options.find("host")->second;
     assert_ip(host, "host");
@@ -76,7 +76,7 @@ int main(int argc, char **argv)
 
     std::cout << "Starting the game..." << std::endl;
     game_started = true;
-    while (true)
+    while (server->getRemainingConnections() > 1)
     {
         uint64_t current_time = timeSinceEpochMillisec();
         if (current_time - last_cycle_time >= (ulong)cycle_interval)

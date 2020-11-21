@@ -87,6 +87,15 @@ bool Server::areAllClientsDisconnected()
     return all_clients_disconnected;
 }
 
+int Server::getRemainingConnections()
+{
+    int connected = 0;
+    for (size_t i = 0; i < clients.size(); i++)
+        if (clients[i]->isConnected())
+            connected += 1;
+    return connected;
+}
+
 void Server::respondToCommand(Client* client, QString command)
 {
     client->getSocket()->write(

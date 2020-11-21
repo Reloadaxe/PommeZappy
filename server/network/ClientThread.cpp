@@ -35,8 +35,11 @@ void ClientThread::run()
     connect(&client_socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
 
     while(game_started == nullptr || *game_started == false)
+    {
+        client_socket.waitForReadyRead();
         if (client_socket.state() == QTcpSocket::UnconnectedState)
             return;
+    }
     if (client_socket.state() == QTcpSocket::UnconnectedState)
         return;
     client_socket.write("go");

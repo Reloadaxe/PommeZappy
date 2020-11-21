@@ -25,6 +25,7 @@ public:
     void respondToCommand(Client* client, QString command);
     bool areAllClientsDisconnected();
     void performGameCycle(Map* map);
+    int getRemainingConnections();
 
     std::vector<Client*> getClients();
     std::vector<Client*> clients;
