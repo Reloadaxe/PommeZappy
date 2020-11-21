@@ -34,10 +34,8 @@ QString Network::Read(void)
 {
     QByteArray array;
 
-    while(!array.contains('\n')) {
-        _socket.waitForReadyRead();
-        array += _socket.readAll();
-    }
+    _socket.waitForReadyRead();
+    array = _socket.readAll();
 
     int bytes = array.indexOf('\n') + 1;
     QByteArray message = array.left(bytes);

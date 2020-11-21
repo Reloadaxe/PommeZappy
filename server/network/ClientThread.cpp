@@ -37,17 +37,12 @@ void ClientThread::run()
     while(game_started == nullptr || *game_started == false)
     {
         client_socket.waitForReadyRead(1);
-        if (client_socket.state() == QTcpSocket::UnconnectedState) {
-            std::cout << "<<Was disconnected during process : " << client->getClientId().toStdString() << std::endl;
+        if (client_socket.state() == QTcpSocket::UnconnectedState)
             return;
-        }
     }
     if (client_socket.state() == QTcpSocket::UnconnectedState)
-    {
-        std::cout << ">>Was disconnected during process : " << client->getClientId().toStdString() << std::endl;
         return;
-    }
-    client_socket.write("go");
+    client_socket.write("go\n");
     client_socket.waitForBytesWritten();
     std::cout << "Sent 'go' to "
               << client->getClientId().toStdString()
@@ -55,7 +50,7 @@ void ClientThread::run()
 
     while(true)
     {
-        client_socket.waitForReadyRead();
+        //client_socket.waitForReadyRead();
         // Reading only first line
         QString line;
         QString command = "";
