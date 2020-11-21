@@ -7,6 +7,6 @@ class Linemate : public Item {
     public:
         Linemate(void);
         void DoAction(void) const override;
-}
+};
 
 #endif

@@ -1,35 +1,53 @@
 #ifndef _PLAYER_HH
 #define _PLAYER_HH
 
+#include <algorithm>
+#include <QJsonObject>
 #include "Map.hh"
-#include "Id.hh"
+#include "Client.h"
+#include "game_enums.hh"
 
-const enum Direction { North, East, South, West };
-const enum Command { left, right, fwd, rightfwd, leftfwd, jump, back, inspect, me };
-
+class Map;
+class Client;
 class Player {
     public:
-        Player(const unsigned int y, const unsigned int x);
+        Player(const int y, const int x);
+        Direction GetOrientation() const;
+        QString GetOrientationStr(const Direction orientation) const;
+        void SetClient(Client *client);
+        Client *GetClient(void) const;
+        int GetId(void) const;
+        int GetY(void) const;
+        int GetX(void) const;
+        int GetLifePoints(void) const;
+        void SetIsDead(const bool isDead);
+        bool GetIsDead(void);
         void AddLifePoint(void);
         void RemoveLifePoint(void);
         void AddVictoryPoint(void);
         void RemoveVictoryPoint(void);
         void ResetEnergy(void);
-        void RemoveEnergy();
-        const bool CanMove() const;
-        const bool CanAttack() const;
-        void Attack();
-        void Move();
-        bool DoCommand(const Command command);
+        void RemoveEnergy(void);
+        bool CanMove(const Map *map) const;
+        bool CanAttack(const Map *map) const;
+        bool CanJump(const Map *map) const;
+        void Attack(const Map *map) const;
+        void Move(const Map *map);
+        bool DoCommand(const Command command, const Map *map);
+        QJsonObject getInformations(const bool all) const;
+        static void SetIds(const unsigned int size);
 
     private:
+        static std::vector<bool> *_ids;
+        bool _is_dead;
         unsigned int _id;
         unsigned int _energy;
-        unsigned int _lifePoints;
+        int _lifePoints;
         unsigned int _victoryPoints;
         Direction _orientation;
-        unsigned int _y;
-        unsigned int _x;
+        int _y;
+        int _x;
+        Client *_client;
 };
 
 #endif

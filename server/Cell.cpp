@@ -1,6 +1,11 @@
 #include "Cell.hh"
 
-Cell::Cell(const unsigned int y, const unsigned int x) : _y(y), _x(x), _item(nullptr), _player(nullptr) {}
+Cell::Cell(const unsigned int y, const unsigned int x) : _y(y), _x(x), _item(nullptr), _client(nullptr) {}
+
+void Cell::SetItem(Item *item)
+{
+    _item = item;
+}
 
 Item *Cell::GetItem(void) const
 {
@@ -13,28 +18,42 @@ void Cell::RemoveItem(void)
     _item = nullptr;
 }
 
-Player *Cell::GetPlayer(void) const
+Client *Cell::GetClient(void) const
 {
-    return _player;
+    return _client;
 }
 
-void Cell::RemovePlayer(void)
+void Cell::RemoveClient(void)
 {
-    _player = nullptr;
+    _client = nullptr;
 }
 
-void SetPlayer(Player *player)
+void Cell::SetClient(Client *client)
 {
-    _player = player;
+    _client = client;
 }
 
-void Show(void)
+unsigned int Cell::GetY(void) const
 {
-    if (_item == nullptr) {
-        // if (commandLine) write(empty cell char)
-        // else DoNothing;
+    return _y;
+}
+
+unsigned int Cell::GetX(void) const
+{
+    return _x;
+}
+
+void Cell::Show(void) const
+{
+    (void)_y; // util with graphisms
+    (void)_x; // util with graphisms
+    if (_client != nullptr) {
+        std::cout << _client->getPlayer()->GetId();
         return;
     }
-    // if (commandLine) write(item->GetChar())
-    // else showItem();
+    if (_item != nullptr) {
+        std::cout << _item->GetRepr();
+        return;
+    }
+    std::cout << " ";
 }

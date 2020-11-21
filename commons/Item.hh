@@ -4,11 +4,12 @@
 class Item {
     public:
         Item(const char c);
+        virtual ~Item();
         virtual void DoAction(void) const = 0;
-        const char GetChar(void) const;
+        char GetRepr(void) const;
 
     private:
         char _char;
-}
+};
 
 #endif

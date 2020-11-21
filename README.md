@@ -1,29 +1,53 @@
 # BestZappy
 
+A school project to build an autonomous video game through AI clients connecting to a central server orchestrating the game.
 ## Server
 
-### Install
-
-Please install the dependencies and compile the library :
+### Deployment
 
 ```bash
-apt install g++ qt5-default -y
-cd server/<build-directory>
-make
+docker-compose up -d
+```
+
+Edit parameters in [`./docker-compose.yml`](docker-compose.yml) !
+### Developement install
+
+Please install the dependencies :
+
+```bash
+apt install g++ qt5-default make -y
+```
+
+**We recommend using QtCreator to build this project.** However, if you wish to use a Makefile, run the following :
+
+```bash
+cd server/build
+make server
 ```
 
 ### Run
 
 ```bash
-./server
+./server # --help
 ```
 
 ## Client
 
-### Install
+### Quick run
 
 ```bash
-apt install g++ qt5-default -y
+docker-compose up --scale client=4 client # Run a lot of clients !
+```
+
+### Developement install
+
+```bash
+apt install g++ qt5-default make -y
+```
+
+**We recommend using QtCreator to build this project.** However, if you wish to use a Makefile, run the following :
+
+```bash
 cd client/build
 make
 ```

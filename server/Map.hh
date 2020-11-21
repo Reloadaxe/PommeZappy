@@ -2,25 +2,32 @@
 #define _MAP_HH
 
 #include <vector>
+#include <QJsonArray>
+#include "Client.h"
 #include "Cell.hh"
+#include "game_enums.hh"
 
+class Cell;
 class Map {
     public:
-        Map(const Map&) = delete;
-        Map& operator=(const Map&) = delete;
-        const unsigned int GetWidth(void) const;
-        const unsigned int GetHeight(void) const;
-        Cell *GetCellAt(const unsigned int y, const unsigned int x) const;
+        Map(Map&) = delete;
+        Map& operator=(Map&) = delete;
+        int GetWidth(void) const;
+        int GetHeight(void) const;
+        Cell *GetCellAt(const int y, const int x) const;
+        std::vector<std::vector<Cell*>> GetCells(void) const;
         void Show(void) const;
+        Cell *GetRandomAvailableCell(void) const;
+        QString GetPartContentAt(const int y, const int x) const;
+        QJsonArray GetPart(const Direction orientation, const int y, const int x) const;
         static Map *Get(void);
-        static Map *Get(const unsigned int height, const unsigned int width);
+        static Map *Get(const int height, const int width);
 
     private:
-        Map(void);
-        Map(const unsigned int height, const unsigned int width);
+        Map(const int height, const int width);
         static Map *_map;
-        const unsigned int _height;
-        const unsigned int _width;
+        const int _height;
+        const int _width;
         std::vector<std::vector<Cell*>> _cells;
 };
 

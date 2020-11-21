@@ -2,7 +2,9 @@
 
 Item::Item(const char c) : _char(c) {}
 
-const char Item::GetChar(void) const
+Item::~Item() {}
+
+char Item::GetRepr(void) const
 {
     return _char;
 }
