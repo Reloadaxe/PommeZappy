@@ -36,7 +36,7 @@ make server
 ### Quick run
 
 ```bash
-docker-compose up --scale client=4 client
+docker-compose up --scale client=4 client # Run a lot of clients !
 ```
 
 ### Developement install
