@@ -50,7 +50,7 @@ void ClientThread::run()
 
     while(true)
     {
-        //client_socket.waitForReadyRead();
+        client_socket.waitForReadyRead();
         // Reading only first line
         QString line;
         QString command = "";
