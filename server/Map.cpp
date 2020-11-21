@@ -47,6 +47,9 @@ std::vector<std::vector<Cell*>> Map::GetCells(void) const
 
 void Map::Show(void) const
 {
+    for (int i = 0; i < _width; i++)
+        std::cout << "=";
+    std::cout << std::endl;
     for (std::vector<Cell*> cellsLine: _cells) {
         for (Cell *cell : cellsLine) {
             cell->Show();
@@ -64,13 +67,8 @@ Cell *Map::GetRandomAvailableCell(void) const
             if (cell->GetClient() == nullptr)
                 cells.push_back(cell);
     
-    const std::vector<Cell*>::iterator it = std::find(cells.begin(), cells.end(), nullptr);
-    if (it != cells.end())
-    {
-        const int index = std::distance(cells.begin(), it);
-        return cells.at(index);
-    }
-    return nullptr;
+    unsigned int cellIndex = rand() % (int)cells.size();
+    return cells.at(cellIndex);
 }
 
 QString Map::GetPartContentAt(const int y, const int x) const

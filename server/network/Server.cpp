@@ -1,4 +1,5 @@
 #include "Server.h"
+#include "ClientThread.h"
 #include "server_utils.h"
 #include "game_commands.h"
 
@@ -36,7 +37,7 @@ void Server::start(void)
     QHostAddress address;
     address.setAddress(this->listen_host);
     listen(address, (qint16)this->listen_port);
-    std::cout << "Starting server..." << std::endl;
+    std::cout << "Server started." << std::endl;
 }
 
 void Server::stop(void)
@@ -52,99 +53,47 @@ void Server::refuseAdditionalClients()
 
 void Server::incomingConnection(qintptr socketDescriptor)
 {
-    QTcpSocket *socket_client = new QTcpSocket(this);
-    socket_client->setSocketDescriptor(socketDescriptor);
-
     if (static_cast<int>(this->clients.size()) >= max_clients
             || this->refuse_additional_clients) {
+        QTcpSocket *socket_client = new QTcpSocket();
+        socket_client->setSocketDescriptor(socketDescriptor);
+        socket_client->waitForReadyRead();
         socket_client->write("Refused connection due to nb clients exceeded or game started ");
-        socket_client->disconnectFromHost();
-        std::cout << "Refused connection due to nb clients exceeded or game started "\
+        std::cout << "Server is full or game started <> "\
                  << socket_client->peerAddress().toString().toStdString() << std::endl;
+        socket_client->waitForBytesWritten();
+        socket_client->disconnectFromHost();
         return;
     }
 
-    QString peer_name = QString::fromUtf8(get_uuid().c_str());
-    Client client = Client(peer_name, socket_client);
-    std::cout << "Client connected with address "\
-             << socket_client->peerAddress().toString().toStdString()\
-             << " : ID " << peer_name.toStdString() << " was attributed" << std::endl;
-    this->clients.insert(std::pair<QTcpSocket*, Client>(socket_client, client));
-
-    connect(socket_client, SIGNAL(readyRead()), this, SLOT(readyRead()));
-    connect(socket_client, SIGNAL(disconnected()), this, SLOT(disconnected()));
-}
-
-/**
- * @brief Server::readyRead
- * Handles incoming command
- */
-void Server::readyRead()
-{
-    std::cout << "reading" << std::endl;
-    QTcpSocket *socket_client = (QTcpSocket*)sender();
-    Client client = clients.find(socket_client)->second;
-
-    if (client.getClientId() != NULL)
-    {
-        // Reading only first line
-        QString line;
-        QString command = "";
-        bool first_line = true;
-        // We need to go through this loop to make
-        // sure we can answer.
-        while(socket_client->canReadLine())
-        {
-            if (first_line) {
-                line = QString::fromUtf8(socket_client->readLine()).trimmed();
-                first_line = false;
-            }
-        }
-        for (int c = 0; c < line.size(); c++)
-            if (line[c] == '\n')
-                break;
-            else
-                command += line[c];
-        this->respondToCommand(&client, command);
-        std::cout << "Received command : " << command.toStdString();
-    } else {
-        std::cout << "ERROR: Can't find client associated with socket : " << socket_client->peerAddress().toString().toStdString() << std::endl;
-        return;
-    }
-}
-
-void Server::disconnected()
-{
-    QTcpSocket *socket_client = (QTcpSocket*)sender();
-    Client client = clients.find(socket_client)->second;
-
-    if (client.getClientId() == NULL)
-    {
-        std::cout << "ERROR: Can't find client : " << socket_client->peerAddress().toString().toStdString();
-        return;
-    }
-    std::cout << "Client disconnected : " << socket_client->peerAddress().toString().toStdString() << std::endl;
-    clients.erase(socket_client);
+    ClientThread* thread = new ClientThread(socketDescriptor, this);
+    thread->game_started = this->game_started;
+    connect(thread, &ClientThread::finished, thread, &ClientThread::deleteLater);
+    thread->start();
 }
 
 std::vector<Client*> Server::getClients()
 {
-    std::vector<Client*> ptr_clients;
-    std::map<QTcpSocket*, Client>::iterator it;
-    for ( it = this->clients.begin(); it != this->clients.end(); it++ )
-        ptr_clients.push_back(&it->second);
-    return ptr_clients;
+    return clients;
 }
 
 bool Server::areAllClientsDisconnected()
 {
     bool all_clients_disconnected = true;
-    std::map<QTcpSocket*, Client>::iterator it;
-    for ( it = this->clients.begin(); it != this->clients.end(); it++ ) {
-        if (it->second.isConnected())
+    for (size_t i = 0; i < clients.size(); i++) {
+        if (clients[i]->isConnected())
             return false;
     }
     return all_clients_disconnected;
+}
+
+int Server::getRemainingConnections()
+{
+    int connected = 0;
+    for (size_t i = 0; i < clients.size(); i++)
+        if (clients[i]->isConnected())
+            connected += 1;
+    return connected;
 }
 
 void Server::respondToCommand(Client* client, QString command)
@@ -152,6 +101,7 @@ void Server::respondToCommand(Client* client, QString command)
     client->getSocket()->write(
         cmd_perform(client, command.toStdString()).toStdString().c_str()
     );
+    client->getSocket()->waitForBytesWritten();
 }
 
 std::vector<Cell *> getAvailableCells(const Map *map)
@@ -174,11 +124,10 @@ std::vector<Cell *> getAvailableCells(const Map *map)
 void Server::performGameCycle(Map* map)
 {
     srand(time(NULL));
-    std::map<QTcpSocket*, Client>::iterator it;
-    for (it = this->clients.begin(); it != this->clients.end(); it++) {
-        Player *player = it->second.getPlayer();
+    for (size_t i = 0; i < clients.size(); i++) {
+        Player *player = clients[i]->getPlayer();
         if (!player->GetIsDead()) {
-            it->second.getPlayer()->ResetEnergy();
+            player->ResetEnergy();
         }
     }
 

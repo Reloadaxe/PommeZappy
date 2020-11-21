@@ -13,6 +13,7 @@ QMAKE_CXXFLAGS += -Wall -Wextra -Wpedantic -Werror
 SOURCES +=  \
     ./network/Client.cpp \
     ./network/Server.cpp \
+    ./network/ClientThread.cpp \
     ./network/server_utils.cpp \
     ../commons/Item.cpp \
     ../commons/Deraumere.cpp \
@@ -41,6 +42,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     ./network/Client.h \
     ./network/Server.h \
+    ./network/ClientThread.h \
     ./network/server_utils.h \
     ../commons/Item.hh \
     ../commons/Deraumere.hh \

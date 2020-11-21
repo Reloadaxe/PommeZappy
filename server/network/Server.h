@@ -25,8 +25,12 @@ public:
     void respondToCommand(Client* client, QString command);
     bool areAllClientsDisconnected();
     void performGameCycle(Map* map);
+    int getRemainingConnections();
 
     std::vector<Client*> getClients();
+    std::vector<Client*> clients;
+
+    bool* game_started = nullptr;
 
 public slots:
     void start(void);
@@ -35,19 +39,17 @@ public slots:
 protected:
     void incomingConnection(qintptr socketDescriptor) Q_DECL_OVERRIDE;
 
-private slots:
-    void readyRead();
-    void disconnected();
-
 private:
     static Server* instance;
     Server(std::string listen_host, int listen_port, int max_clients, QObject *parent = nullptr);
 
-    std::map<QTcpSocket*, Client> clients;
     QString listen_host;
     int listen_port;
     int max_clients;
     bool refuse_additional_clients = false;
+
+signals:
+    void error(QTcpSocket::SocketError socketError);
 };
 
 #endif

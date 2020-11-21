@@ -32,6 +32,11 @@ int Player::GetLifePoints(void) const
     return _lifePoints;
 }
 
+void Player::SetIsDead(const bool isDead)
+{
+    _is_dead = isDead;
+}
+
 bool Player::GetIsDead(void)
 {
     if (!_is_dead && _lifePoints < 0) {
@@ -146,7 +151,8 @@ void Player::Attack(const Map *map) const
         client = map->GetCellAt(_y, _x - 1)->GetClient();
         break;
     }
-    client->getPlayer()->RemoveLifePoint();
+    if (client != NULL)
+        client->getPlayer()->RemoveLifePoint();
 }
 
 void Player::Move(const Map *map)
@@ -250,11 +256,11 @@ QString Player::GetOrientationStr(const Direction orientation) const
     return "";
 }
 
-QJsonObject Player::getInformations(const int id, const bool all) const
+QJsonObject Player::getInformations(const bool all) const
 {
     QJsonObject informations;
 
-    informations.insert("id", id);
+    informations.insert("id", (int)_id);
     informations.insert("life", (int)_lifePoints);
     informations.insert("victory", (int)_victoryPoints);
     if (all) {
