@@ -71,7 +71,7 @@ void ClientThread::run()
             else
                 command += line[c];
         if (command.size() > 0) {
-            std::cout << "Received command : " << command.toStdString() << std::endl;
+            //std::cout << "Received command : " << command.toStdString() << std::endl;
             this->respondToCommand(client, command);
         }
     }
@@ -88,7 +88,7 @@ void ClientThread::disconnected()
 void ClientThread::respondToCommand(Client* client, QString command)
 {
     std::string response = cmd_perform(client, command.toStdString()).toStdString();
-    std::cout << "Responding : " << response << std::endl;
+    //std::cout << "Responding : " << response << std::endl;
     client->getSocket()->write((response + "\n").c_str());
     client->getSocket()->waitForBytesWritten();
 }
