@@ -2,4 +2,6 @@
 
 Linemate::Linemate(void) : Item('L') {}
 
-void Linemate::DoAction(void) const {}
+void Linemate::DoAction(Player *player) const {
+    player->AddLifePoint();
+}

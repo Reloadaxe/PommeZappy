@@ -2,4 +2,6 @@
 
 Deraumere::Deraumere(void) : Item('D') {}
 
-void Deraumere::DoAction(void) const {}
+void Deraumere::DoAction(Player *player) const {
+    player->RemoveLifePoint();
+}
