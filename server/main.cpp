@@ -50,6 +50,7 @@ int main(int argc, char **argv)
         << std::endl;
 
     // Initializing game elements
+    bool game_started = false;
     Map *map = Map::Get(map_height, map_width);
     Player::SetIds(nb_players);
     std::vector<Player*> players = get_init_players(map, nb_players);
@@ -58,6 +59,7 @@ int main(int argc, char **argv)
 
     // Initializing server
     Server *server = Server::getInstance(host, port, nb_players);
+    server->game_started = &game_started;
     QThread *server_thread = new QThread;
     server->moveToThread(server_thread);
     QObject::connect(server_thread, SIGNAL(started()), server, SLOT(start()));
@@ -71,8 +73,9 @@ int main(int argc, char **argv)
     std::cout << "Initializating game players..." << std::endl;
     associate_players_to_clients(map, players, server->clients);
     associate_map_to_clients(map, server->clients);
-    std::cout << "Starting the game..." << std::endl;
 
+    std::cout << "Starting the game..." << std::endl;
+    game_started = true;
     while (true)
     {
         uint64_t current_time = timeSinceEpochMillisec();

@@ -29,6 +29,8 @@ public:
     std::vector<Client*> getClients();
     std::vector<Client*> clients;
 
+    bool* game_started = nullptr;
+
 public slots:
     void start(void);
     void stop(void);

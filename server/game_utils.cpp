@@ -16,7 +16,6 @@ void associate_players_to_clients(Map* map, std::vector<Player*> players, std::v
     for(std::size_t i = 0; i < clients.size(); i++)
     {
         clients[i]->setPlayer(players[i]);
-        std::cout << players[i]->GetY() << " " << players[i]->GetX() << std::endl;
         map->GetCellAt(players[i]->GetY(), players[i]->GetX())->SetClient(clients[i]);
     }
 }

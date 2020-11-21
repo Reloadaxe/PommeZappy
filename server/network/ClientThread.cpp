@@ -34,6 +34,19 @@ void ClientThread::run()
              << " : ID " << client->getClientId().toStdString() << " was attributed" << std::endl;
     connect(&client_socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
 
+    while(game_started == nullptr || *game_started == false)
+        if (client_socket.state() != QTcpSocket::UnconnectedState)
+            client_socket.waitForReadyRead();
+        else
+            return;
+    if (client_socket.state() == QTcpSocket::UnconnectedState)
+        return;
+    client_socket.write("go");
+    std::cout << "Sent 'go' to "
+              << client->getClientId().toStdString()
+              << std::endl;
+    client_socket.waitForBytesWritten();
+
     while(true)
     {
         client_socket.waitForReadyRead();
@@ -65,6 +78,7 @@ void ClientThread::run()
 
 void ClientThread::disconnected()
 {
+    client->setSocket(nullptr);
     std::cout << "Client disconnected : " << client->getClientId().toStdString() << std::endl;
 }
 
@@ -73,4 +87,5 @@ void ClientThread::respondToCommand(Client* client, QString command)
     std::string response = cmd_perform(client, command.toStdString()).toStdString();
     std::cout << "Responding : " << response << std::endl;
     client->getSocket()->write(response.c_str());
+    client->getSocket()->waitForBytesWritten();
 }

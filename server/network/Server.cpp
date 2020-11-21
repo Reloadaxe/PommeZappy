@@ -61,11 +61,13 @@ void Server::incomingConnection(qintptr socketDescriptor)
         socket_client->write("Refused connection due to nb clients exceeded or game started ");
         std::cout << "Server is full or game started <> "\
                  << socket_client->peerAddress().toString().toStdString() << std::endl;
+        socket_client->waitForBytesWritten();
         socket_client->disconnectFromHost();
         return;
     }
 
     ClientThread* thread = new ClientThread(socketDescriptor, this);
+    thread->game_started = this->game_started;
     connect(thread, &ClientThread::finished, thread, &ClientThread::deleteLater);
     thread->start();
 }
@@ -90,6 +92,7 @@ void Server::respondToCommand(Client* client, QString command)
     client->getSocket()->write(
         cmd_perform(client, command.toStdString()).toStdString().c_str()
     );
+    client->getSocket()->waitForBytesWritten();
 }
 
 std::vector<Cell *> getAvailableCells(const Map *map)

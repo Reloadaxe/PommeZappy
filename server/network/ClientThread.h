@@ -17,6 +17,8 @@ public:
     void run() override;
     void respondToCommand(Client* client, QString command);
 
+    bool* game_started = nullptr;
+
 public slots:
     void disconnected();
 
@@ -26,8 +28,8 @@ signals:
 
 private:
     int socketDescriptor;
-    Client* client;
-    QTcpSocket* socket;
+    Client* client = nullptr;
+    QTcpSocket* socket = nullptr;
 };
 
 #endif // CLIENTTHREAD_H
