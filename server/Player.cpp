@@ -176,6 +176,15 @@ void Player::Move(const Map *map)
     }
 
     map->GetCellAt(_y, _x)->SetClient(GetClient());
+    Item *item = map->GetCellAt(_y, _x)->GetItem();
+    if (item != nullptr) {
+        item->DoAction(this);
+    }
+}
+
+bool Player::HasWon(void) const
+{
+    return _victoryPoints >= 10;
 }
 
 bool Player::CanJump(const Map *map) const

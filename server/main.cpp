@@ -93,9 +93,15 @@ int main(int argc, char **argv)
             break;
         }
         Player *playerAlived = nullptr;
+        bool playerWon = false;
         int playersAlived = 0;
         for (Client *client : server->getClients()) {
             Player *player = client->getPlayer();
+            if (player->HasWon()) {
+                playerWon = true;
+                std::cout << "Player " << std::to_string(playerAlived->GetId()) << " has 10 victory points, he won the game !" << std::endl;
+                break;
+            }
             if (!player->GetIsDead()) {
                 playersAlived++;
                 if (playerAlived != nullptr)
@@ -103,6 +109,8 @@ int main(int argc, char **argv)
                 playerAlived = player;
             }
         }
+        if (playerWon)
+            break;
         if (playersAlived == 0) {
             std::cout << "No more player alive" << std::endl;
             break;

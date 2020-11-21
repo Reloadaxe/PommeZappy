@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
 
     Network *network = Network::Get();
     bool jumped = false;
+    int turned = 0;
     network->Read();
     while (true) {
         network->Send("me");
@@ -68,12 +69,16 @@ int main(int argc, char *argv[])
         network->Send("map");
         QJsonArray map = JsonFromString(network->Read()).value("map").toArray();
 
-        std::vector<QString> *commands = player->Think(&map, jumped);
+        std::vector<QString> *commands = player->Think(&map, jumped, turned);
         jumped = false;
 
         for (QString command: *commands) {
-            if (command == "jump")
+            if (command == "jump" || command == "right") { 
                 jumped = true;
+                turned++;
+            } else {
+                turned = 0;
+            }
             network->Send(command);
         }
         network->Read();

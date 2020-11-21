@@ -6,7 +6,7 @@
 class Deraumere : public Item {
     public:
         Deraumere(void);
-        void DoAction(void) const override;
+        void DoAction(Player *player) const override;
 };
 
 #endif

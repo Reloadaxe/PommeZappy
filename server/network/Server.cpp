@@ -124,12 +124,10 @@ std::vector<Cell *> getAvailableCells(const Map *map)
 void Server::performGameCycle(Map* map)
 {
     srand(time(NULL));
-    for (size_t i = 0; i < clients.size(); i++) {
+    for (int i = 0; i < (int)clients.size(); i++) {
         Player *player = clients[i]->getPlayer();
         if (!player->GetIsDead()) {
             player->ResetEnergy();
-        } else {
-            std::cerr << "player is dead" << std::endl;
         }
     }
 
