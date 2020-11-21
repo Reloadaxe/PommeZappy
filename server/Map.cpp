@@ -93,25 +93,25 @@ QJsonArray Map::GetPart(const Direction orientation, const int y, const int x) c
     QJsonArray part;
 
     switch (orientation) {
-        case North:
+        case Direction::zp_North:
             part.append(GetPartContentAt(y - 1, x - 1));
             part.append(GetPartContentAt(y - 1, x));
             part.append(GetPartContentAt(y - 1, x + 1));
             part.append(GetPartContentAt(y - 2, x));
             break;
-        case East:
+        case Direction::zp_East:
             part.append(GetPartContentAt(y - 1, x + 1));
             part.append(GetPartContentAt(y, x + 1));
             part.append(GetPartContentAt(y + 1, x + 1));
             part.append(GetPartContentAt(y, x + 2));
             break;
-        case South:
+        case Direction::zp_South:
             part.append(GetPartContentAt(y + 1, x + 1));
             part.append(GetPartContentAt(y + 1, x));
             part.append(GetPartContentAt(y + 1, x - 1));
             part.append(GetPartContentAt(y + 2, x));
             break;
-        case West:
+        case Direction::zp_West:
             part.append(GetPartContentAt(y + 1, x - 1));
             part.append(GetPartContentAt(y, x - 1));
             part.append(GetPartContentAt(y - 1, x - 1));

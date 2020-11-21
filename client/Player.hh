@@ -2,6 +2,7 @@
 #define _PLAYER_HH
 
 #include <iostream>
+#include <vector>
 #include <QString>
 #include <QJsonArray>
 #include <QJsonValue>
