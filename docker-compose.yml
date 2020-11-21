@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: server.Dockerfile
-    image: flavienb/zappy-server:0.1.0
+    image: flavienb/zappy-server:0.2.0
     command: /usr/app/server/build/server --host 0.0.0.0 --players 4 --map-height 10 --map-width 10 --cycle 500
     ports:
       - 4242:4242
@@ -15,5 +15,5 @@ services:
     build:
       context: .
       dockerfile: client.Dockerfile
-    image: flavienb/zappy-client:0.1.0
+    image: flavienb/zappy-client:0.2.0
     command: /usr/app/client/build/client --host server --port 4242
