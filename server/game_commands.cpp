@@ -58,7 +58,7 @@ QString cmd_perform(Client* client, std::string command)
 
 QString cmd_perform_left(Client* client)
 {
-    const bool success = client->getPlayer()->DoCommand(Command::left, client->getMap());
+    const bool success = client->getPlayer()->DoCommand(Command::zp_left, client->getMap());
     QJsonObject j;
 
     j.insert("left", success ? "OK" : "KO");
@@ -69,7 +69,7 @@ QString cmd_perform_left(Client* client)
 
 QString cmd_perform_right(Client* client)
 {
-    const bool success = client->getPlayer()->DoCommand(Command::right, client->getMap());
+    const bool success = client->getPlayer()->DoCommand(Command::zp_right, client->getMap());
     QJsonObject j;
 
     j.insert("right", success ? "OK" : "KO");
@@ -80,7 +80,7 @@ QString cmd_perform_right(Client* client)
 
 QString cmd_perform_fwd(Client* client)
 {
-    const bool success = client->getPlayer()->DoCommand(Command::fwd, client->getMap());
+    const bool success = client->getPlayer()->DoCommand(Command::zp_fwd, client->getMap());
     QJsonObject j;
 
     j.insert("fwd", success ? "OK" : "KO");
@@ -91,7 +91,7 @@ QString cmd_perform_fwd(Client* client)
 
 QString cmd_perform_leftfwd(Client* client)
 {
-    const bool success = client->getPlayer()->DoCommand(Command::leftfwd, client->getMap());
+    const bool success = client->getPlayer()->DoCommand(Command::zp_leftfwd, client->getMap());
     QJsonObject j;
 
     j.insert("leftfwd", success ? "OK" : "KO");
@@ -102,7 +102,7 @@ QString cmd_perform_leftfwd(Client* client)
 
 QString cmd_perform_rightfwd(Client* client)
 {
-    const bool success = client->getPlayer()->DoCommand(Command::rightfwd, client->getMap());
+    const bool success = client->getPlayer()->DoCommand(Command::zp_rightfwd, client->getMap());
     QJsonObject j;
 
     j.insert("rightfwd", success ? "OK" : "KO");
@@ -113,7 +113,7 @@ QString cmd_perform_rightfwd(Client* client)
 
 QString cmd_perform_jump(Client* client)
 {
-    const bool success = client->getPlayer()->DoCommand(Command::jump, client->getMap());
+    const bool success = client->getPlayer()->DoCommand(Command::zp_jump, client->getMap());
     QJsonObject j;
 
     j.insert("jump", success ? "OK" : "KO");
@@ -124,7 +124,7 @@ QString cmd_perform_jump(Client* client)
 
 QString cmd_perform_back(Client* client)
 {
-    const bool success = client->getPlayer()->DoCommand(Command::back, client->getMap());
+    const bool success = client->getPlayer()->DoCommand(Command::zp_back, client->getMap());
     QJsonObject j;
 
     j.insert("back", success ? "OK" : "KO");
