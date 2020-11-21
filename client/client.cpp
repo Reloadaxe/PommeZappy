@@ -58,6 +58,7 @@ int main(int argc, char *argv[])
     Player *player = Player::Get();
 
     Network *network = Network::Get();
+    network->Read();
     while (true) {
         network->Send("me");
         QJsonObject me = JsonFromString(network->Read()).value("me").toObject();
