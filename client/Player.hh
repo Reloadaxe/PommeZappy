@@ -12,7 +12,7 @@ class Player {
         Player(const Player&) = delete;
         Player& operator=(const Player&) = delete;
         static Player *Get(void);
-        std::vector<QString> *Think(QJsonArray *map);
+        std::vector<QString> *Think(QJsonArray *map, const bool jumped, const int turned);
 
     private:
         Player(void);

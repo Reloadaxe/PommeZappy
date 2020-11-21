@@ -26,6 +26,7 @@ class Player {
         void RemoveLifePoint(void);
         void AddVictoryPoint(void);
         void RemoveVictoryPoint(void);
+        bool HasWon(void) const;
         void ResetEnergy(void);
         void RemoveEnergy(void);
         bool CanMove(const Map *map) const;

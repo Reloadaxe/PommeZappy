@@ -5,6 +5,7 @@
 #include "Client.h"
 
 class Client;
+class Item;
 class Cell {
     public:
         Cell(const unsigned int y, const unsigned int x);

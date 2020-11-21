@@ -2,4 +2,6 @@
 
 Mendiane::Mendiane(void) : Item('M') {}
 
-void Mendiane::DoAction(void) const {}
+void Mendiane::DoAction(Player *player) const {
+    player->AddVictoryPoint();
+}
