@@ -20,6 +20,7 @@ class Player {
         int GetY(void) const;
         int GetX(void) const;
         int GetLifePoints(void) const;
+        void SetIsDead(const bool isDead);
         bool GetIsDead(void);
         void AddLifePoint(void);
         void RemoveLifePoint(void);

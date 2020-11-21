@@ -32,6 +32,11 @@ int Player::GetLifePoints(void) const
     return _lifePoints;
 }
 
+void Player::SetIsDead(const bool isDead)
+{
+    _is_dead = isDead;
+}
+
 bool Player::GetIsDead(void)
 {
     if (!_is_dead && _lifePoints < 0) {
