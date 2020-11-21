@@ -35,17 +35,15 @@ void ClientThread::run()
     connect(&client_socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
 
     while(game_started == nullptr || *game_started == false)
-        if (client_socket.state() != QTcpSocket::UnconnectedState)
-            client_socket.waitForReadyRead();
-        else
+        if (client_socket.state() == QTcpSocket::UnconnectedState)
             return;
     if (client_socket.state() == QTcpSocket::UnconnectedState)
         return;
     client_socket.write("go");
+    client_socket.waitForBytesWritten();
     std::cout << "Sent 'go' to "
               << client->getClientId().toStdString()
               << std::endl;
-    client_socket.waitForBytesWritten();
 
     while(true)
     {
