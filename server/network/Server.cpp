@@ -55,11 +55,13 @@ void Server::incomingConnection(qintptr socketDescriptor)
 {
     if (static_cast<int>(this->clients.size()) >= max_clients
             || this->refuse_additional_clients) {
-        QTcpSocket *socket_client = new QTcpSocket(0);
+        QTcpSocket *socket_client = new QTcpSocket();
+        socket_client->setSocketDescriptor(socketDescriptor);
+        socket_client->waitForReadyRead();
         socket_client->write("Refused connection due to nb clients exceeded or game started ");
-        socket_client->disconnectFromHost();
         std::cout << "Server is full or game started <> "\
                  << socket_client->peerAddress().toString().toStdString() << std::endl;
+        socket_client->disconnectFromHost();
         return;
     }
 
@@ -77,7 +79,6 @@ bool Server::areAllClientsDisconnected()
 {
     bool all_clients_disconnected = true;
     for (size_t i = 0; i < clients.size(); i++) {
-        //std::cout << "Client " << i << " is " << clients[i]->isConnected() << std::endl;
         if (clients[i]->isConnected())
             return false;
     }

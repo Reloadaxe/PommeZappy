@@ -51,7 +51,8 @@ QString cmd_perform(Client* client, std::string command)
 {
     cmd_func_ptr command_fnc = get_rgtr_command_fnc(command);
     if (command_fnc != nullptr)
-        return command_fnc(client);
+        if (client->getPlayer() != NULL)
+            return command_fnc(client);
     return QString::fromUtf8(get_response_ko(command).c_str());
 }
 
