@@ -65,6 +65,7 @@ void ClientThread::run()
 
 void ClientThread::disconnected()
 {
+    client->getPlayer()->SetIsDead(true);
     std::cout << "Client disconnected : " << client->getClientId().toStdString() << std::endl;
 }
 
