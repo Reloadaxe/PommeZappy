@@ -47,6 +47,9 @@ std::vector<std::vector<Cell*>> Map::GetCells(void) const
 
 void Map::Show(void) const
 {
+    for (int i = 0; i < _width; i++)
+        std::cout << "=";
+    std::cout << std::endl;
     for (std::vector<Cell*> cellsLine: _cells) {
         for (Cell *cell : cellsLine) {
             cell->Show();

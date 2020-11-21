@@ -151,7 +151,8 @@ void Player::Attack(const Map *map) const
         client = map->GetCellAt(_y, _x - 1)->GetClient();
         break;
     }
-    client->getPlayer()->RemoveLifePoint();
+    if (client != NULL)
+        client->getPlayer()->RemoveLifePoint();
 }
 
 void Player::Move(const Map *map)

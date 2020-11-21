@@ -82,11 +82,11 @@ int main(int argc, char **argv)
         if (current_time - last_cycle_time >= (ulong)cycle_interval)
         {
             clear_screen();
+            std::cout << "Currently running game cycle " << (current_game_cycle + 1) << "..." << std::endl;
             server->performGameCycle(map);
             map->Show();
             current_game_cycle += 1;
             last_cycle_time = current_time;
-            std::cout << "Currently running game cycle " << current_game_cycle << "..." << std::endl;
         }
         if (server->areAllClientsDisconnected()) {
             std::cout << "All clients are disconnected" << std::endl;
