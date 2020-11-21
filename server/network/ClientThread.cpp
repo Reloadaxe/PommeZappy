@@ -89,6 +89,6 @@ void ClientThread::respondToCommand(Client* client, QString command)
 {
     std::string response = cmd_perform(client, command.toStdString()).toStdString();
     std::cout << "Responding : " << response << std::endl;
-    client->getSocket()->write(response.c_str());
+    client->getSocket()->write((response + "\n").c_str());
     client->getSocket()->waitForBytesWritten();
 }
