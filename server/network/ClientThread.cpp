@@ -79,7 +79,8 @@ void ClientThread::run()
 void ClientThread::disconnected()
 {
     client->setSocket(nullptr);
-    client->getPlayer()->SetIsDead(true);
+    if (client->getPlayer() != nullptr)
+        client->getPlayer()->SetIsDead(true);
     std::cout << "Client disconnected : " << client->getClientId().toStdString() << std::endl;
 }
 
